@@ -1,0 +1,41 @@
+version: '3.8'
+services:
+  api:
+    build: ./server
+    ports:
+      - "8080:8080"
+    depends_on:
+      - dynamodb-local
+    environment:
+      - PORT=8080
+      - NODE_ENV=development
+      - AWS_ACCESS_KEY_ID=AKIAZ7SALELOPAF3XI7Q
+      - AWS_SECRET_ACCESS_KEY=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
+      - REGION=ap-southeast-1
+    networks:
+      - app-network
+    develop:
+      watch:
+        - path: ./server/package.json
+          action: rebuild
+        - path: ./server/package-lock.json
+          action: rebuild
+        - path: ./server
+          target: /app
+          action: sync
+
+  dynamodb-local:
+    image: "amazon/dynamodb-local"
+    ports:
+      - "8000:8000"
+    command: "-jar DynamoDBLocal.jar -sharedDb"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+        
+
+
