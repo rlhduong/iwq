@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import Guide from '../models/guide';
 import { v4 as uuidv4 } from 'uuid';
 import { format } from 'date-fns';
+import { SessionUser } from '../types';
 
 export const getGuides = async (req: Request, res: Response) => {
   const { featured } = req.query;
@@ -22,7 +23,7 @@ export const getGuide = async (req: Request, res: Response) => {
     const guide = await Guide.get(guideId);
     if (!guide) {
       res.status(404).json({ message: 'guide not found' });
-      return;
+      return; 
     }
 
     res.json({ message: 'Guides retrieved successfully', data: guide });
@@ -67,7 +68,7 @@ export const createGuide = async (
 
 export const deleteGuide = async (req: Request, res: Response) => {
   const { guideId } = req.params;
-  const user = req.user;
+  const user = req.user as SessionUser;
 
   try {
     const guide = await Guide.get(guideId);
@@ -76,7 +77,7 @@ export const deleteGuide = async (req: Request, res: Response) => {
       return;
     }
 
-    if (guide.authorId !== user?.id) {
+    if (guide.authorId !== (user?.id || '')) {
       res
         .status(403)
         .json({ message: 'You are not authorized to delete this guide' });
@@ -96,7 +97,7 @@ export const updateGuide = async (
 ): Promise<void> => {
   const { guideId } = req.params;
   const updateData = { ...req.body };
-  const user = req.user;
+  const user = req.user as SessionUser;
 
   try {
     const guide = await Guide.get(guideId);
@@ -105,7 +106,7 @@ export const updateGuide = async (
       return;
     }
 
-    if (guide.teacherId !== user?.id) {
+    if (guide.teacherId !== (user?.id || '')) {
       res.status(403).json({ message: 'Not authorized to update this guide' });
       return;
     }

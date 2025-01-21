@@ -1,10 +1,10 @@
+interface SessionUser {
+  id: string;
+  firstName: string;
+  lastName: string;
+  favourites: string[];
+}
 declare global {
-  interface SessionUser {
-    id: string;
-    firstName: string;
-    lastName: string;
-    favourites: string[];
-  }
   namespace Express {
     interface Request {
       user?: SessionUser;
@@ -12,4 +12,4 @@ declare global {
   }
 }
 
-export {};
+export { SessionUser };

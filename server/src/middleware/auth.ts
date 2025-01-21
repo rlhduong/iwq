@@ -44,5 +44,6 @@ export const sessionValidation = async (
     lastName: user.lastName,
     favourites: user.favourites,
   };
+
   next();
 };
