@@ -8,8 +8,10 @@ import fs from 'fs';
 import path from 'path';
 import dynamoose from 'dynamoose';
 import pluralize from 'pluralize';
+
 import User from '../models/user';
 import Session from '../models/session';
+import Guide from '../models/guide';
 
 import dotenv from 'dotenv';
 
@@ -33,8 +35,17 @@ if (!isProduction) {
   });
 }
 
+const originalWarn = console.warn.bind(console);
+console.warn = (message, ...args) => {
+  if (
+    !message.includes("Tagging is not currently supported in DynamoDB Local")
+  ) {
+    originalWarn(message, ...args);
+  }
+};
+
 async function createTables() {
-  const models = [User, Session];
+  const models = [User, Session, Guide];
 
   for (const model of models) {
     const tableName = model.name;

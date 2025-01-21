@@ -7,10 +7,12 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import * as dynamoose from 'dynamoose';
 
-import User from './models/user';
 
 /* ROUTES IMPORT */
 import userRoutes from './routes/user'
+import guideRoutes from './routes/guide'
+
+
 /* APP CONFIG */
 dotenv.config();
 
@@ -32,6 +34,7 @@ app.use(cookieParser());
 
 /* ROUTES */
 app.use('/user', userRoutes);
+app.use('/guides', guideRoutes);
 
 /* SERVER LISTEN */
 const port = process.env.PORT || 8080;
