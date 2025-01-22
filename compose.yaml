@@ -24,6 +24,24 @@ services:
           target: /app
           action: sync
 
+  client:
+    build: ./client
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+    networks:
+      - app-network
+    develop:
+      watch:
+        - path: ./clien/package.json
+          action: rebuild
+        - path: ./client/package-lock.json
+          action: rebuild
+        - path: ./client
+          target: /app
+          action: sync
+
   dynamodb-local:
     image: "amazon/dynamodb-local"
     ports:
