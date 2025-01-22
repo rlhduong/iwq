@@ -22,8 +22,8 @@ export const getGuide = async (req: Request, res: Response) => {
   try {
     const guide = await Guide.get(guideId);
     if (!guide) {
-      res.status(404).json({ message: 'guide not found' });
-      return; 
+      res.status(404).json({ error: 'guide not found' });
+      return;
     }
 
     res.json({ message: 'Guides retrieved successfully', data: guide });
@@ -40,7 +40,7 @@ export const createGuide = async (
     const { authorId, authorName } = req.body;
 
     if (!authorId || !authorName) {
-      res.status(400).json({ message: 'Author Id and name are required' });
+      res.status(400).json({ error: 'Author Id and name are required' });
       return;
     }
 
@@ -73,14 +73,14 @@ export const deleteGuide = async (req: Request, res: Response) => {
   try {
     const guide = await Guide.get(guideId);
     if (!guide) {
-      res.status(404).json({ message: 'guide not found' });
+      res.status(404).json({ error: 'guide not found' });
       return;
     }
 
     if (guide.authorId !== (user?.id || '')) {
       res
         .status(403)
-        .json({ message: 'You are not authorized to delete this guide' });
+        .json({ error: 'You are not authorized to delete this guide' });
       return;
     }
 

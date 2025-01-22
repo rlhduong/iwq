@@ -7,11 +7,9 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import * as dynamoose from 'dynamoose';
 
-
 /* ROUTES IMPORT */
-import userRoutes from './routes/user'
-import guideRoutes from './routes/guide'
-
+import userRoutes from './routes/user';
+import guideRoutes from './routes/guide';
 
 /* APP CONFIG */
 dotenv.config();
@@ -27,9 +25,12 @@ app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({ policy: 'cross-origin' }));
 app.use(morgan('common'));
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cors({
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: 'http://localhost:3000',
+    credentials: true,
+  })
+);
 app.use(cookieParser());
 
 /* ROUTES */

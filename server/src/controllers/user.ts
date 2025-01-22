@@ -13,13 +13,17 @@ export const login = async (req: Request, res: Response) => {
     .exec();
 
   if (query && query.length === 0) {
-    res.status(401).json({ message: 'Invalid username or password' });
+    res.status(401).json({
+      error: 'Invalid username or password',
+    });
     return;
   }
 
   const user = query[0].toJSON();
   if (!cmpPassword(password, user.password)) {
-    res.status(401).json({ message: 'Invalid username or password' });
+    res.status(401).json({
+      error: 'Invalid username or password',
+    });
     return;
   }
 
@@ -34,7 +38,9 @@ export const register = async (req: Request, res: Response) => {
     .exec();
 
   if (query && query.length > 0) {
-    res.status(409).json({ message: 'Username already exists' });
+    res.status(401).json({
+      error: 'Username already exists',
+    });
     return;
   }
 
@@ -53,9 +59,16 @@ export const register = async (req: Request, res: Response) => {
 
 export const logout = async (req: Request, res: Response) => {
   clearSessionTokenCookie(req, res);
-  res.status(200).json({ message: 'User logged out' });
+  res
+    .status(200)
+    .json({
+      data: 'User successfully logged out',
+      message: 'Logout successfully',
+    });
 };
 
 export const status = async (req: Request, res: Response) => {
-  res.status(200).json({ message: 'User is logged in' });
+  res
+    .status(200)
+    .json({ message: 'User is logged in', data: req.user || null });
 };

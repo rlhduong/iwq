@@ -1,6 +1,7 @@
 version: '3.8'
 services:
   api:
+    container_name: server
     build: ./server
     ports:
       - "8080:8080"
@@ -9,8 +10,8 @@ services:
     environment:
       - PORT=8080
       - NODE_ENV=development
-      - AWS_ACCESS_KEY_ID=AKIAZ7SALELOPAF3XI7Q
-      - AWS_SECRET_ACCESS_KEY=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
+      - AWS_ACCESS_KEY_ID=local
+      - AWS_SECRET_ACCESS_KEY=local
       - REGION=ap-southeast-1
     networks:
       - app-network
@@ -26,6 +27,7 @@ services:
 
   client:
     build: ./client
+    container_name: client
     ports:
       - "3000:3000"
     depends_on:
@@ -43,6 +45,7 @@ services:
           action: sync
 
   dynamodb-local:
+    container_name: db
     image: "amazon/dynamodb-local"
     ports:
       - "8000:8000"

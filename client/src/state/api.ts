@@ -9,18 +9,16 @@ const customBaseQuery = async (
 ) => {
   const baseQuery = fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL,
+    credentials: 'include',
   });
 
   try {
     const result: any = await baseQuery(args, api, extraOptions);
 
     if (result.error) {
-      const errorData = result.error.data;
-      const errorMessage =
-        errorData?.message ||
-        result.error.status.toString() ||
-        'An error occurred';
-      toast.error(`Error: ${errorMessage}`);
+      if (result.error.data.message) {
+        toast.error(result.error.data.message);
+      }
     }
 
     const isMutationRequest =
@@ -49,8 +47,44 @@ const customBaseQuery = async (
 export const api = createApi({
   baseQuery: customBaseQuery,
   reducerPath: 'api',
-  tagTypes: ['Featured Guides', 'Guides'],
+  tagTypes: ['Featured Guides', 'Guides', 'User'],
   endpoints: (build) => ({
+    /*
+      ====================
+      USER
+      ====================
+    */
+
+    validatSession: build.query<User, void>({
+      query: () => 'user/status',
+      providesTags: ['User'],
+    }),
+
+    login: build.mutation<User, { username: string; password: string }>({
+      query: (body) => ({
+        url: 'user/login',
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: ['User'],
+    }),
+
+    register: build.mutation<User, {}>({
+      query: (body) => ({
+        url: 'user/register',
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: ['User'],
+    }),
+
+    logout: build.mutation<void, void>({
+      query: () => ({
+        url: 'user/logout',
+        method: 'POST',
+      }),
+      invalidatesTags: ['User'],
+    }),
 
     /**
 		 ====================
@@ -65,4 +99,10 @@ export const api = createApi({
   }),
 });
 
-export const { useGetFeaturedGuidesQuery } = api;
+export const {
+  useValidatSessionQuery,
+  useLoginMutation,
+  useRegisterMutation,
+  useLogoutMutation,
+  useGetFeaturedGuidesQuery,
+} = api;

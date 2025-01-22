@@ -100,5 +100,5 @@ export async function handleLogin(
   const token = generateSessionToken();
   const session = await createSession(token, userId);
   setSessionTokenCookie(res, token, session.expiresAt);
-  res.status(200).send({ message });
+  res.status(200).json({ data: { message } });
 }

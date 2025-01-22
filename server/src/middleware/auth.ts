@@ -1,5 +1,6 @@
 import { Response, Request, NextFunction } from 'express';
 import { validateSessionToken, clearSessionTokenCookie } from '../libs/auth';
+import { error } from 'console';
 
 export const csrfProtection = (
   req: Request,
@@ -27,14 +28,22 @@ export const sessionValidation = async (
   const token = cookies?.session;
 
   if (!token) {
-    res.status(401).json({ message: 'Unauthorized: Missing session token' });
+    res.status(401).json({
+      error: {
+        message: 'Unauthorized: Missing session token',
+      },
+    });
     return;
   }
 
   const { session, user } = await validateSessionToken(token);
   if (!session || !user) {
     clearSessionTokenCookie(req, res);
-    res.status(401).json({ message: 'Unauthorized: Invalid session token' });
+    res.status(401).json({
+      error: {
+        message: 'Unauthorized: Invalid session token',
+      },
+    });
     return;
   }
 
@@ -43,6 +52,7 @@ export const sessionValidation = async (
     firstName: user.firstName,
     lastName: user.lastName,
     favourites: user.favourites,
+    username: user.username,
   };
 
   next();
