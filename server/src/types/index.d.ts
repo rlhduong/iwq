@@ -2,7 +2,7 @@ interface SessionUser {
   id: string;
   firstName: string;
   lastName: string;
-  username: string;
+  email: string;
   favourites: string[];
 }
 declare global {

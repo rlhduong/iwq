@@ -6,15 +6,12 @@ import { v4 as uuidv4 } from 'uuid';
 import { format } from 'date-fns';
 
 export const login = async (req: Request, res: Response) => {
-  const { username, password } = req.body;
-  const query = await User.query('username')
-    .eq(username)
-    .using('usernameIndex')
-    .exec();
+  const { email, password } = req.body;
+  const query = await User.scan('email').eq(email).exec();
 
   if (query && query.length === 0) {
     res.status(401).json({
-      error: 'Invalid username or password',
+      error: 'Invalid email or password',
     });
     return;
   }
@@ -22,7 +19,7 @@ export const login = async (req: Request, res: Response) => {
   const user = query[0].toJSON();
   if (!cmpPassword(password, user.password)) {
     res.status(401).json({
-      error: 'Invalid username or password',
+      error: 'Invalid email or password',
     });
     return;
   }
@@ -31,22 +28,19 @@ export const login = async (req: Request, res: Response) => {
 };
 
 export const register = async (req: Request, res: Response) => {
-  const { username, password, firstName, lastName } = req.body;
-  const query = await User.query('username')
-    .eq(username)
-    .using('usernameIndex')
-    .exec();
+  const { email, password, firstName, lastName } = req.body;
+  const query = await User.scan('email').eq(email).exec();
 
   if (query && query.length > 0) {
     res.status(401).json({
-      error: 'Username already exists',
+      error: 'email already exists',
     });
     return;
   }
 
   const user = new User({
     userId: uuidv4(),
-    username,
+    email,
     password: hashPassword(password),
     firstName,
     lastName,
@@ -59,12 +53,10 @@ export const register = async (req: Request, res: Response) => {
 
 export const logout = async (req: Request, res: Response) => {
   clearSessionTokenCookie(req, res);
-  res
-    .status(200)
-    .json({
-      data: 'User successfully logged out',
-      message: 'Logout successfully',
-    });
+  res.status(200).json({
+    data: 'User successfully logged out',
+    message: 'Logout successfully',
+  });
 };
 
 export const status = async (req: Request, res: Response) => {

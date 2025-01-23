@@ -16,6 +16,7 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { LoginFormData, loginSchema } from '@/lib/schemas';
+import Link from 'next/link';
 
 const Login = () => {
   const [login] = useLoginMutation();
@@ -25,14 +26,14 @@ const Login = () => {
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      username: '',
+      email: '',
       password: '',
     },
   });
 
   const onSubmit = async (values: LoginFormData) => {
     const result = await login(values);
-    if (result.error) {
+    if (result?.error) {
       setError(true);
       return;
     }
@@ -42,10 +43,10 @@ const Login = () => {
   };
 
   return (
-    <div className="login-layout">
+    <div className="auth-layout">
       <main className="auth__main">
-        <h1 className="login__title">Welcome back</h1>
-        <p className="login__subtitle">
+        <h1 className="auth__title">Welcome back</h1>
+        <p className="auth__subtitle">
           Login with your Apple or Google account
         </p>
         <div className="login__oauth-container group">
@@ -56,7 +57,7 @@ const Login = () => {
             Log in with Apple
           </Button>
         </div>
-        <div className="login__break">
+        <div className="auth__break">
           <hr className="flex-grow" />
           <p className="text-md text-gray-500">Or continue with</p>
           <hr className="flex-grow" />
@@ -66,12 +67,12 @@ const Login = () => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8 gap-4">
             <FormField
               control={form.control}
-              name="username"
+              name="email"
               render={({ field }) => (
                 <FormItem className="mb-5">
-                  <FormLabel>Username</FormLabel>
+                  <FormLabel className="auth__label">Email</FormLabel>
                   <FormControl>
-                    <Input {...field} className="login__input" />
+                    <Input {...field} className="auth__input" />
                   </FormControl>
                 </FormItem>
               )}
@@ -81,27 +82,37 @@ const Login = () => {
               name="password"
               render={({ field }) => (
                 <FormItem className="mb-5">
-                  <FormLabel>Password</FormLabel>
+                  <div className="flex flex-row justify-between w-full">
+                    <FormLabel className="auth__label">Password</FormLabel>
+                    <Link
+                      href="/"
+                      className="hover:underline text-md pt-[0.1rem] text-primary-200"
+                    >
+                      Forgot your password?
+                    </Link>
+                  </div>
                   <FormControl>
-                    <Input
-                      {...field}
-                      className="login__input"
-                      type="password"
-                    />
+                    <Input {...field} className="auth__input" type="password" />
                   </FormControl>
                 </FormItem>
               )}
             />
             {error && (
               <p className="text-sm text-center text-red-300 mt-4">
-                Invalid username or password
+                Invalid email or password
               </p>
             )}
             <Button type="submit" className="login__submit">
-              Submit
+              Log in
             </Button>
           </form>
         </Form>
+        <div className="mt-4 flex flex-row justify-center gap-1">
+          <p>Dont't have an account?</p>
+          <Link href="/register" className="underline">
+            Sign up
+          </Link>
+        </div>
       </main>
     </div>
   );

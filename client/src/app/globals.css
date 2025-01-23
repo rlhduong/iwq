@@ -186,19 +186,19 @@ input[type='color'] {
 }
 
 /* LOGIN */
-.login-layout {
-  @apply flex flex-col  w-full h-full justify-center items-center;
+.auth-layout {
+  @apply flex flex-col w-full h-full justify-center items-center;
 }
 
 .auth__main {
   @apply flex flex-col w-3/4 sm:w-1/2 lg:w-[28%] bg-customgreys-darkGrey rounded-lg p-8;
 }
 
-.login__title {
+.auth__title {
   @apply text-2xl font-semibold mb-2 text-center;
 }
 
-.login__subtitle {
+.auth__subtitle {
   @apply text-sm text-gray-400 mb-4 text-center;
 }
 
@@ -210,11 +210,15 @@ input[type='color'] {
   @apply w-full h-10 font-semibold text-md hover:!bg-customgreys-secondarybg !border-customgreys-secondarybg;
 }
 
-.login__break {
+.auth__break {
   @apply flex flex-row justify-between items-center gap-3 mt-2;
 }
 
-.login__input {
+.auth__label {
+  @apply text-lg;
+}
+
+.auth__input {
   @apply border-customgreys-secondarybg rounded-md w-full h-10 px-4 focus:border-primary-500 ;
 }
 

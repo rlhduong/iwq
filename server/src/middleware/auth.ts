@@ -52,7 +52,7 @@ export const sessionValidation = async (
     firstName: user.firstName,
     lastName: user.lastName,
     favourites: user.favourites,
-    username: user.username,
+    email: user.email,
   };
 
   next();

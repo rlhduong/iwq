@@ -3,7 +3,7 @@ declare global {
     userId: string;
     firstName?: string;
     lastName?: string;
-    username?: string;
+    email: string;
     favourites?: string[];
   }
 
@@ -48,7 +48,7 @@ declare global {
   }
 
   interface FeaturedGuideCardProps {
-    guideId: string
+    guideId: string;
     title: string;
     description: string;
     image: string;

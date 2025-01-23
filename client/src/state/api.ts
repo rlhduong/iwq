@@ -60,7 +60,7 @@ export const api = createApi({
       providesTags: ['User'],
     }),
 
-    login: build.mutation<User, { username: string; password: string }>({
+    login: build.mutation<User, { email: string; password: string }>({
       query: (body) => ({
         url: 'user/login',
         method: 'POST',
@@ -69,7 +69,7 @@ export const api = createApi({
       invalidatesTags: ['User'],
     }),
 
-    register: build.mutation<User, {}>({
+    register: build.mutation<User, Partial<User>>({
       query: (body) => ({
         url: 'user/register',
         method: 'POST',
