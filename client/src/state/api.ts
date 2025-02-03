@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { BaseQueryApi, FetchArgs } from '@reduxjs/toolkit/query';
 import { toast } from 'sonner';
+import { get } from 'http';
 
 const customBaseQuery = async (
   args: string | FetchArgs,
@@ -96,6 +97,11 @@ export const api = createApi({
       query: () => 'guides?featured=true',
       providesTags: ['Featured Guides'],
     }),
+
+    getGuides: build.query<Guide[], void>({
+      query: () => 'guides',
+      providesTags: ['Guides'],
+    }),
   }),
 });
 
@@ -105,4 +111,5 @@ export const {
   useRegisterMutation,
   useLogoutMutation,
   useGetFeaturedGuidesQuery,
+  useGetGuidesQuery,
 } = api;

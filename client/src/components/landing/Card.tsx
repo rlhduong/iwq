@@ -14,7 +14,7 @@ const Card = ({
   return (
     <motion.div
       key={guideId}
-      initial={{ y: 30, opacity: 0 }}
+      initial={{ y: 0, opacity: 0 }}
       whileInView={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.4, delay: 0.2 }}
       viewport={{ amount: 0.6 }}

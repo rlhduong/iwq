@@ -54,6 +54,24 @@ declare global {
     image: string;
     authorName: string;
   }
+
+  interface SideBarGroupProps {
+    title: string;
+    icon: React.ReactNode;
+    items: {
+      title: string;
+      url: string;
+    }[];
+  }
+
+  interface DashboardHeaderProps {
+    title: string;
+    subtitle: string;
+  }
+
+  interface GuideCardProps {
+    guide: Guide;
+  }
 }
 
 export {};

@@ -21,7 +21,7 @@ import Link from 'next/link';
 
 const Login = () => {
   const [register] = useRegisterMutation();
-  const [error, setError] = useState<Boolean>(false);
+  const [error, setError] = useState<boolean>(false);
   const router = useRouter();
 
   const form = useForm<RegisterFormData>({

@@ -4,6 +4,7 @@ import React from 'react';
 import { useGetFeaturedGuidesQuery } from '@/state/api';
 import { motion } from 'framer-motion';
 import Card from './Card';
+import Loading from '../Loader';
 
 const FeaturedGuides = () => {
   const { data: guides, error, isLoading } = useGetFeaturedGuidesQuery();
@@ -20,7 +21,10 @@ const FeaturedGuides = () => {
         Here is our favourite guides to get you started
       </p>
       <div className="landing__featured-guides">
-        {guides &&
+        {isLoading ? (
+          <Loading />
+        ) : (
+          guides &&
           guides.map((guide) => (
             <Card
               key={guide.guideId}
@@ -30,7 +34,8 @@ const FeaturedGuides = () => {
               authorName={guide.authorName}
               image={guide.image}
             />
-          ))}
+          ))
+        )}
       </div>
     </motion.div>
   );

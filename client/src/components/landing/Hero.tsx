@@ -3,12 +3,16 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useCarousel } from '@/hooks/useCarousels';
+import { Button } from '../ui/button';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
 const heroImgs = ['/hero1.jpg', '/hero2.jpg', '/hero3.jpg'];
 
 const Hero = () => {
   const currImg = useCarousel({ total: heroImgs.length });
+  const router = useRouter();
+
   return (
     <motion.div
       initial={{ y: 20, opacity: 0 }}
@@ -17,12 +21,18 @@ const Hero = () => {
       className="landing__hero"
     >
       <div className="landing__hero-content">
-        <h1 className="landing__hero-title">Courses</h1>
+        <h1 className="landing__hero-title">Guides</h1>
         <p className="landing__hero-description">
-          This is the list of the courses you can enroll in.
-          <br />
-          Courses when you need them and want them.
+          ipsum dolor sit amet, consectetur adipiscing elit. Donec sollicitudin,
+          lectus quis pharetra aliquet, sem velit ultrices tortor, ac fermentum
+          massa justo sit amet risus.
         </p>
+        <Button
+          className="bg-primary-750 hover:bg-primary-click"
+          onClick={() => router.push('/guides')}
+        >
+          Get Started
+        </Button>
       </div>
       <div className="landing__hero-images">
         {heroImgs.map((src, index) => (

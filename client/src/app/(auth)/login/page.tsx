@@ -20,7 +20,7 @@ import Link from 'next/link';
 
 const Login = () => {
   const [login] = useLoginMutation();
-  const [error, setError] = useState<Boolean>(false);
+  const [error, setError] = useState<boolean>(false);
   const router = useRouter();
 
   const form = useForm<LoginFormData>({
@@ -108,7 +108,7 @@ const Login = () => {
           </form>
         </Form>
         <div className="mt-4 flex flex-row justify-center gap-1">
-          <p>Dont't have an account?</p>
+          <p>Don't have an account?</p>
           <Link href="/register" className="underline">
             Sign up
           </Link>
