@@ -2,7 +2,7 @@
 
 import { Bell, ChevronsUpDown, LogOut, Settings } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { useValidatSessionQuery } from '@/state/api';
+import { useValidatSessionQuery, useLogoutMutation } from '@/state/api';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,11 +18,20 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar';
+import { useRouter } from 'next/navigation';
 
 function NavUser() {
   const { isMobile } = useSidebar();
+  const router = useRouter();
+  const [logout] = useLogoutMutation();
   const { data: user, isLoading } = useValidatSessionQuery();
   if (isLoading) return <></>;
+  if (!user) return <></>;
+
+  const handleLogout = async ()  => {
+    await logout();
+    router.push('/');
+  }
 
   return (
     <SidebarMenu>
@@ -81,7 +90,7 @@ function NavUser() {
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="hover:!bg-customgreys-primarybg">
+            <DropdownMenuItem className="hover:!bg-customgreys-primarybg" onClick={handleLogout}>
               <LogOut />
               Log out
             </DropdownMenuItem>

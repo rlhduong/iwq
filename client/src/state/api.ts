@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { BaseQueryApi, FetchArgs } from '@reduxjs/toolkit/query';
 import { toast } from 'sonner';
-import { get } from 'http';
+import { create } from 'domain';
 
 const customBaseQuery = async (
   args: string | FetchArgs,
@@ -102,6 +102,38 @@ export const api = createApi({
       query: () => 'guides',
       providesTags: ['Guides'],
     }),
+
+    getMyGuides: build.query<Guide[], void>({
+      query: () => 'guides/my',
+      providesTags: ['Guides'],
+    }),
+
+    getFavouriteGuides: build.query<Guide[], void>({
+      query: () => 'guides/favourites',
+      providesTags: ['Guides'],
+    }),
+
+    getGuide: build.query<Guide, string>({
+      query: (id) => `guides/${id}`,
+      providesTags: ['Guides'],
+    }),
+
+    createGuide: build.mutation<void, Partial<Guide>>({
+      query: (body) => ({
+        url: 'guides',
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: ['Guides'],
+    }),
+
+    deleteGuide: build.mutation<void, string>({
+      query: (id) => ({
+        url: `guides/${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Guides'],
+    }),
   }),
 });
 
@@ -112,4 +144,9 @@ export const {
   useLogoutMutation,
   useGetFeaturedGuidesQuery,
   useGetGuidesQuery,
+  useGetMyGuidesQuery,
+  useGetFavouriteGuidesQuery,
+  useGetGuideQuery,
+  useDeleteGuideMutation,
+  useCreateGuideMutation,
 } = api;

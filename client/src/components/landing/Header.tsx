@@ -5,9 +5,10 @@ import { BookOpen } from 'lucide-react';
 import Link from 'next/link';
 import { useValidatSessionQuery } from '@/state/api';
 import { Button } from '@/components/ui/button';
-
+import { useRouter } from 'next/navigation';
 const Header = () => {
-  const { data: user, isLoading } = useValidatSessionQuery();
+  const { data: user, isLoading, isError } = useValidatSessionQuery();
+  const router = useRouter();
 
   return (
     <div className="landing-navbar">
@@ -19,25 +20,23 @@ const Header = () => {
           </Link>
         </div>
         <div>
-          {isLoading ? (
-            <></>
-          ) : (
-            !user && (
-              <div className="flex space-x-4">
-                <Button
-                  variant="ghost"
-                  className="hover:text-customgreys-darkGrey hover:bg-primary-700"
-                >
-                  Log in
-                </Button>
-                <Button
-                  variant="ghost"
-                  className="hover:text-customgreys-darkGrey hover:bg-primary-700"
-                >
-                  Sign up
-                </Button>
-              </div>
-            )
+          {isError && (
+            <div className="flex space-x-4">
+              <Button
+                variant="ghost"
+                className="hover:text-customgreys-darkGrey hover:bg-primary-700"
+                onClick={() => router.push('/login')}
+              >
+                Log in
+              </Button>
+              <Button
+                variant="ghost"
+                className="hover:text-customgreys-darkGrey hover:bg-primary-700"
+                onClick={() => router.push('/register')}
+              >
+                Sign up
+              </Button>
+            </div>
           )}
         </div>
       </div>

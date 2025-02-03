@@ -92,7 +92,6 @@ const Login = () => {
                       <Input
                         {...field}
                         className="auth__input"
-                        type="password"
                       />
                     </FormControl>
                     <FormMessage className='text-red-300'/>

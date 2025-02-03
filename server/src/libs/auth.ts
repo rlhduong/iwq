@@ -32,10 +32,8 @@ export async function createSession(token: string, userId: string) {
 export async function validateSessionToken(token: string) {
   const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
   const session = await Session.get(sessionId);
-  console.log('session', session);
 
   if (!session) {
-    console.log('No session found');
     return {
       session: null,
       user: null,
@@ -43,7 +41,6 @@ export async function validateSessionToken(token: string) {
   }
 
   if (Date.now() >= session.expiresAt * 1000) {
-    console.log('Session expired');
     return {
       session: null,
       user: null,

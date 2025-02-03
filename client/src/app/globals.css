@@ -317,4 +317,47 @@ input[type='color'] {
   @apply text-sm bg-customgreys-secondarybg rounded-full px-3 py-2 text-gray-400;
 }
 
+/* GUIDE EDIT PAGE */
+.guide-edit__layout {
+  @apply flex flex-col min-h-screen w-full bg-customgreys-secondarybg;
+}
 
+.guide-edit__main {
+  @apply flex flex-col w-full h-full p-20 gap-6;
+}
+
+.guide-edit__back-button {
+  @apply flex items-center gap-2 !text-primary-500 w-2/12 hover:!bg-primary-500 hover:!text-customgreys-darkerGrey;
+}
+
+.guide-edit__save-button {
+  @apply flex items-center gap-2 bg-primary-500 hover:!bg-primary-700 text-customgreys-darkerGrey hover:!text-white-50;
+}
+
+.guide-edit__switch {
+  @apply data-[state=checked]:!bg-green-500 data-[state=unchecked]:!bg-gray-300 flex items-center space-x-2;
+}
+
+.guide-edit__form {
+  @apply flex flex-row justify-between w-full;
+}
+
+.guide-edit__form-box {
+  @apply flex flex-col w-1/2;
+}
+
+.guide-edit__form-label {
+  @apply font-semibold text-md text-gray-400;
+}
+
+.guide-edit__form-input {
+  @apply bg-customgreys-primarybg border-none;
+}
+
+.guide-edit__form-textarea {
+  @apply bg-customgreys-primarybg border-none h-40;
+}
+
+.guide-edit__form-thumbnail {
+  @apply h-[100px] lg:h-[180px] xl:h-[220-px] p-0 overflow-hidden w-1/2;
+}

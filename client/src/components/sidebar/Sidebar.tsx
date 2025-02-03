@@ -20,15 +20,15 @@ const data = {
       items: [
         {
           title: 'Community',
-          url: '#',
+          url: '/guides',
         },
         {
           title: 'My Guides',
           url: '/guides/my',
         },
         {
-          title: 'Favorites',
-          url: '/guides/favorites',
+          title: 'Favourites',
+          url: '/guides/favourites',
         },
       ],
     },

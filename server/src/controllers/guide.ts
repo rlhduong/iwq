@@ -10,7 +10,7 @@ export const getGuides = async (req: Request, res: Response) => {
     const guides =
       featured && featured === 'true'
         ? await Guide.scan('featured').eq(true).exec()
-        : await Guide.scan().exec();
+        : await Guide.scan('status').eq('published').exec();
     res.json({ message: 'guides retrieved successfully', data: guides });
   } catch (error) {
     res.status(500).json({ message: 'Error retrieving guides', error });
@@ -32,13 +32,33 @@ export const getGuide = async (req: Request, res: Response) => {
   }
 };
 
+export const getMyGuides = async (req: Request, res: Response) => {
+  const user = req.user as SessionUser;
+  try {
+    const guides = await Guide.scan('authorId').eq(user.id).exec();
+    res.json({ message: 'Guides retrieved successfully', data: guides });
+  } catch (error) {
+    res.status(500).json({ message: 'Error retrieving guides', error });
+  }
+};
+
+export const getFavouriteGuides = async (req: Request, res: Response) => {
+  const user = req.user as SessionUser;
+  try {
+    const favouriteIds = user.favourites || [];
+    const guides = await Guide.batchGet(favouriteIds);
+    res.json({ message: 'Guides retrieved successfully', data: guides });
+  } catch (error) {
+    res.status(500).json({ message: 'Error retrieving guides', error });
+  }
+};
+
 export const createGuide = async (
   req: Request,
   res: Response
 ): Promise<void> => {
   try {
     const { authorId, authorName } = req.body;
-
     if (!authorId || !authorName) {
       res.status(400).json({ error: 'Author Id and name are required' });
       return;
@@ -52,14 +72,14 @@ export const createGuide = async (
       description: '',
       category: 'Uncategorized',
       image: '',
-      status: 'Draft',
+      status: 'draft',
       sections: [],
       features: false,
       createdAt: format(new Date(), 'dd/MM/yyyy'),
       updatedAt: format(new Date(), 'dd/MM/yyyy'),
     });
-    await newguide.save();
 
+    await newguide.save();
     res.json({ message: 'guide created successfully', data: newguide });
   } catch (error) {
     res.status(500).json({ message: 'Error creating guide', error });

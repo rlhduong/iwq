@@ -55,7 +55,6 @@ export const logout = async (req: Request, res: Response) => {
   clearSessionTokenCookie(req, res);
   res.status(200).json({
     data: 'User successfully logged out',
-    message: 'Logout successfully',
   });
 };
 

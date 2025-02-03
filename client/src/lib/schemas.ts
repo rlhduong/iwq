@@ -25,3 +25,10 @@ export const registerSchema = z.object({
 });
 
 export type RegisterFormData = z.infer<typeof registerSchema>;
+
+export const editGuideSchema = z.object({
+  title: z.string().min(1, 'Title required'),
+  description: z.string().min(1, 'Description required'),
+});
+
+export type EditGuideFormData = z.infer<typeof editGuideSchema>;

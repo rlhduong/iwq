@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import {
   getGuides,
+  getMyGuides,
+  getFavouriteGuides,
   createGuide,
   deleteGuide,
   updateGuide,
@@ -11,8 +13,10 @@ import { sessionValidation } from '../middleware/auth';
 const router = Router();
 
 router.get('/', getGuides);
-router.get('/:guideId', getGuide);
 router.post('/', sessionValidation, createGuide);
+router.get('/my', sessionValidation, getMyGuides);
+router.get('/favourites', sessionValidation, getFavouriteGuides);
+router.get('/:guideId', getGuide);
 router.put('/:guideId', sessionValidation, updateGuide);
 router.delete('/:guideId', sessionValidation, deleteGuide);
 
