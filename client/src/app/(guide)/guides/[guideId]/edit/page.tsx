@@ -3,18 +3,36 @@
 import React, { useEffect } from 'react';
 import Header from '@/components/dashboard/Header';
 
-import { useGetGuideQuery } from '@/state/api';
+import { useGetGuideQuery, useUpdateGuideMutation } from '@/state/api';
 import { useRouter, useParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { editGuideSchema, EditGuideFormData } from '@/lib/schemas';
-import Left from './Left';
+import useEditSection from '@/hooks/useEditSection';
+import Left from '@/components/edit/Left';
+import Right from '@/components/edit/Right';
+
+const chapter: Chapter = {
+  chapterId: '1',
+  title: 'Chapter 1',
+  description: 'Chapter 1 description',
+  type: 'text' as 'text',
+  content: 'Chapter 1 content',
+};
+
+const sections2: Section = {
+  sectionId: '1',
+  title: 'Section 1',
+  description: 'Section 1 description',
+  chapters: [chapter],
+};
 
 const page = () => {
   const router = useRouter();
   const params = useParams();
+  const [updateGuide] = useUpdateGuideMutation();
   const {
     data: guide,
     error,
@@ -39,6 +57,10 @@ const page = () => {
     }
   }
 
+  const { currSections, actions } = useEditSection({
+    sections: guide?.sections || [sections2],
+  });
+
   const form = useForm<EditGuideFormData>({
     resolver: zodResolver(editGuideSchema),
     defaultValues: {
@@ -56,8 +78,15 @@ const page = () => {
     }
   }, [guide]);
 
-  const handleSaveProgress = () => {
-    console.log(form.getValues());
+  const handleSaveProgress = async () => {
+    if (!guide) return;
+    const updatedGuide = {
+      ...guide,
+      ...form.getValues(),
+      sections: currSections,
+    };
+    console.log(updatedGuide);
+    updateGuide(updatedGuide);
   };
 
   return (
@@ -87,7 +116,7 @@ const page = () => {
         </div>
         <div className="guide-edit__form">
           <Left form={form} />
-          <div className="guide-edit__form-box"></div>
+          <Right currSections={currSections} actions={actions} />
         </div>
       </main>
     </div>

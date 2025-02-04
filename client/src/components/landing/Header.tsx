@@ -7,7 +7,7 @@ import { useValidatSessionQuery } from '@/state/api';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 const Header = () => {
-  const { data: user, isLoading, isError } = useValidatSessionQuery();
+  const { isError } = useValidatSessionQuery();
   const router = useRouter();
 
   return (

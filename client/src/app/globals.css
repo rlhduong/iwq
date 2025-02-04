@@ -323,7 +323,7 @@ input[type='color'] {
 }
 
 .guide-edit__main {
-  @apply flex flex-col w-full h-full p-20 gap-6;
+  @apply flex flex-col w-full h-full p-20 gap-6 overflow-hidden;
 }
 
 .guide-edit__back-button {
@@ -339,11 +339,11 @@ input[type='color'] {
 }
 
 .guide-edit__form {
-  @apply flex flex-row justify-between w-full;
+  @apply flex flex-col sm:flex-row sm:justify-between w-full;
 }
 
 .guide-edit__form-box {
-  @apply flex flex-col w-1/2;
+  @apply flex flex-col sm:w-1/2;
 }
 
 .guide-edit__form-label {
@@ -360,4 +360,44 @@ input[type='color'] {
 
 .guide-edit__form-thumbnail {
   @apply h-[100px] lg:h-[180px] xl:h-[220-px] p-0 overflow-hidden w-1/2;
+}
+
+.guide-edit__form-section-box {
+  @apply bg-customgreys-primarybg rounded-lg p-5 max-h-[450px]  overflow-auto;
+}
+
+.guide-edit__form-create-section-button {
+  @apply text-primary-700 hover:!text-primary-500;
+}
+
+.guide-edit__form-sections {
+  @apply flex flex-col gap-4 p-4 pb-10 bg-[#27282D] rounded-md box-border;
+}
+
+.guide-edit__form-whole-section {
+  @apply flex flex-col gap-2 transition-transform;
+}
+
+.guide-edit__form-section {
+  @apply w-full bg-customgreys-darkGrey p-4 rounded-sm flex flex-col gap-4;
+}
+
+.guide-edit__form-section-title {
+  @apply text-md;
+}
+
+.guide-edit__form-section-description {
+  @apply text-sm text-gray-400;
+}
+
+.guide-edit__form-create-chapter-button {
+  @apply text-primary-700 hover:!text-primary-500 text-[0.8rem] p-0;
+}
+
+.guide-edit__form-chapters {
+  @apply flex flex-col gap-2;
+}
+
+.guide-edit_form-chapter {
+  @apply flex flex-row justify-between pl-3 py-1 bg-slate-900 items-center rounded-sm;
 }

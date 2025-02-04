@@ -72,6 +72,19 @@ declare global {
   interface GuideCardProps {
     guide: Guide;
   }
+
+  interface EditFormSectionActions {
+    addSection: () => void;
+    editSection: (sectionIndex: number, newSection: Section) => void;
+    deleteSection: (sectionIndex: number) => void;
+    addChapter: (sectionIndex: number) => void;
+    editChapter: (
+      sectionIndex: number,
+      chapterIndex: number,
+      newChapter: Chapter
+    ) => void;
+    deleteChapter: (sectionIndex: number, chapterIndex: number) => void;
+  }
 }
 
 export {};

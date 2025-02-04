@@ -126,32 +126,15 @@ export const updateGuide = async (
       return;
     }
 
-    if (guide.teacherId !== (user?.id || '')) {
+    if (guide.authorId !== (user?.id || '')) {
       res.status(403).json({ message: 'Not authorized to update this guide' });
       return;
     }
-
-    if (updateData.sections) {
-      const sectionsData =
-        typeof updateData.sections === 'string'
-          ? JSON.parse(updateData.sections)
-          : updateData.sections;
-
-      updateData.sections = sectionsData.map((section: any) => ({
-        ...section,
-        sectionId: section.sectionId || uuidv4(),
-        chapters: section.chapters.map((chapter: any) => ({
-          ...chapter,
-          chapterId: chapter.chapterId || uuidv4(),
-        })),
-      }));
-    }
-
     Object.assign(guide, updateData);
     await guide.save();
 
-    res.json({ message: 'Course updated successfully', data: guide });
+    res.json({ message: 'Guide updated successfully', data: guide });
   } catch (error) {
-    res.status(500).json({ message: 'Error updating course', error });
+    res.status(500).json({ message: 'Error updating guide', error });
   }
 };

@@ -1,7 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { BaseQueryApi, FetchArgs } from '@reduxjs/toolkit/query';
 import { toast } from 'sonner';
-import { create } from 'domain';
 
 const customBaseQuery = async (
   args: string | FetchArgs,
@@ -17,7 +16,7 @@ const customBaseQuery = async (
     const result: any = await baseQuery(args, api, extraOptions);
 
     if (result.error) {
-      if (result.error.data.message) {
+      if (result.error.data?.message) {
         toast.error(result.error.data.message);
       }
     }
@@ -134,6 +133,15 @@ export const api = createApi({
       }),
       invalidatesTags: ['Guides'],
     }),
+
+    updateGuide: build.mutation<void, Partial<Guide>>({
+      query: (body) => ({
+        url: `guides/${body.guideId}`,
+        method: 'PUT',
+        body,
+      }),
+      invalidatesTags: ['Guides'],
+    }),
   }),
 });
 
@@ -149,4 +157,5 @@ export const {
   useGetGuideQuery,
   useDeleteGuideMutation,
   useCreateGuideMutation,
+  useUpdateGuideMutation,
 } = api;

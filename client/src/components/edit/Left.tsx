@@ -45,7 +45,7 @@ const Left = ({ form }: { form: UseFormReturn<EditGuideFormData> }) => {
       </div>
 
       <Form {...form}>
-        <form className="gap-4">
+        <form className="gap-4 sm:w-4/5">
           <FormField
             control={form.control}
             name="title"
@@ -67,7 +67,7 @@ const Left = ({ form }: { form: UseFormReturn<EditGuideFormData> }) => {
                   Description
                 </FormLabel>
                 <FormControl>
-                  <Textarea className="guide-edit__form-textarea" />
+                  <Textarea {...field} className="guide-edit__form-textarea" />
                 </FormControl>
               </FormItem>
             )}
