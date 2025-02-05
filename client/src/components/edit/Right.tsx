@@ -3,7 +3,6 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
 import Section from './Section';
-
 const Right = ({
   currSections,
   actions,

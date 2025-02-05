@@ -14,21 +14,6 @@ import useEditSection from '@/hooks/useEditSection';
 import Left from '@/components/edit/Left';
 import Right from '@/components/edit/Right';
 
-const chapter: Chapter = {
-  chapterId: '1',
-  title: 'Chapter 1',
-  description: 'Chapter 1 description',
-  type: 'text' as 'text',
-  content: 'Chapter 1 content',
-};
-
-const sections2: Section = {
-  sectionId: '1',
-  title: 'Section 1',
-  description: 'Section 1 description',
-  chapters: [chapter],
-};
-
 const page = () => {
   const router = useRouter();
   const params = useParams();
@@ -58,7 +43,7 @@ const page = () => {
   }
 
   const { currSections, actions } = useEditSection({
-    sections: guide?.sections || [sections2],
+    sections: guide?.sections || [],
   });
 
   const form = useForm<EditGuideFormData>({
@@ -75,6 +60,7 @@ const page = () => {
         title: guide.title,
         description: guide.description,
       });
+      actions.initialise(guide.sections);
     }
   }, [guide]);
 
@@ -85,7 +71,6 @@ const page = () => {
       ...form.getValues(),
       sections: currSections,
     };
-    console.log(updatedGuide);
     updateGuide(updatedGuide);
   };
 
@@ -110,7 +95,7 @@ const page = () => {
               className="guide-edit__save-button"
               onClick={handleSaveProgress}
             >
-              Save
+              Save changes
             </Button>
           </div>
         </div>

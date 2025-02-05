@@ -80,7 +80,7 @@ export const createGuide = async (
     });
 
     await newguide.save();
-    res.json({ message: 'guide created successfully', data: newguide });
+    res.json({data: newguide });
   } catch (error) {
     res.status(500).json({ message: 'Error creating guide', error });
   }
@@ -105,7 +105,7 @@ export const deleteGuide = async (req: Request, res: Response) => {
     }
 
     await guide.delete();
-    res.json({ message: 'guide deleted successfully' });
+    res.json({data: 'Guide deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: 'Error deleting guide', error });
   }
@@ -130,7 +130,12 @@ export const updateGuide = async (
       res.status(403).json({ message: 'Not authorized to update this guide' });
       return;
     }
-    Object.assign(guide, updateData);
+
+    guide.updatedAt = format(new Date(), 'dd/MM/yyyy');
+    guide.title = updateData.title;
+    guide.description = updateData.description;
+    guide.sections = updateData.sections;
+    console.log(guide);
     await guide.save();
 
     res.json({ message: 'Guide updated successfully', data: guide });

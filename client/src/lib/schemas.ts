@@ -32,3 +32,12 @@ export const editGuideSchema = z.object({
 });
 
 export type EditGuideFormData = z.infer<typeof editGuideSchema>;
+
+export const editChapterSchema = z.object({
+  title: z.string().min(1, 'Title required'),
+  description: z.string().min(1, 'Description required'),
+  content: z.string(),
+  videoUrl: z.string(),
+});
+
+export type EditChapterFormData = z.infer<typeof editChapterSchema>;

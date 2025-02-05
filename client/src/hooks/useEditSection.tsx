@@ -8,6 +8,10 @@ interface UseEditSectionprop {
 const useEditSection = ({ sections }: UseEditSectionprop) => {
   const [currSections, setCurrSections] = useState(sections);
 
+  const initialise = (sections: Section[]) => {
+    setCurrSections(sections);
+  };
+
   const addSection = () => {
     const newSection = {
       sectionId: uuidv4(),
@@ -17,6 +21,7 @@ const useEditSection = ({ sections }: UseEditSectionprop) => {
     };
     setCurrSections([...currSections, newSection]);
   };
+
   const editSection = (sectionIndex: number, newSection: Section) => {
     const newSections = [...currSections];
     newSections[sectionIndex] = newSection;
@@ -38,7 +43,11 @@ const useEditSection = ({ sections }: UseEditSectionprop) => {
       content: '',
     };
     const newSections = [...currSections];
-    newSections[sectionIndex].chapters.push(newChapter);
+    const updatedSection = {
+      ...newSections[sectionIndex],
+      chapters: [...newSections[sectionIndex].chapters, newChapter],
+    };
+    newSections[sectionIndex] = updatedSection;
     setCurrSections(newSections);
   };
 
@@ -47,20 +56,37 @@ const useEditSection = ({ sections }: UseEditSectionprop) => {
     chapterIndex: number,
     newChapter: Chapter
   ) => {
-    const newSections = [...currSections];
-    newSections[sectionIndex].chapters[chapterIndex] = newChapter;
+    const newSections = currSections.map((section, sIdx) =>
+      sIdx === sectionIndex
+        ? {
+            ...section,
+            chapters: section.chapters.map((chapter, cIdx) =>
+              cIdx === chapterIndex ? { ...chapter, ...newChapter } : chapter
+            ),
+          }
+        : section
+    );
+
     setCurrSections(newSections);
   };
 
   const deleteChapter = (sectionIndex: number, chapterIndex: number) => {
-    const newSections = [...currSections];
-    newSections[sectionIndex].chapters.splice(chapterIndex, 1);
+    const newSections = currSections.map((section, idx) =>
+      idx === sectionIndex
+        ? {
+            ...section,
+            chapters: section.chapters.filter((_, i) => i !== chapterIndex),
+          }
+        : section
+    );
+
     setCurrSections(newSections);
   };
 
   return {
     currSections,
     actions: {
+      initialise,
       addSection,
       editSection,
       deleteSection,

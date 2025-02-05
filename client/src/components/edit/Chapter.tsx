@@ -1,7 +1,11 @@
-import React from 'react';
+'use client';
 
-import { Button } from '@/components/ui/button';
-import { SquarePen, Trash2 } from 'lucide-react';
+import React from 'react';
+import { Dialog, DialogTrigger } from '@/components/ui/dialog';
+import ChapterModal from './ChapterModal';
+import { motion } from 'framer-motion';
+import DeleteButton from '../DeleteButton';
+import EditButton from '../EditButton';
 
 interface ChapterProps {
   sectionIndex: number;
@@ -17,26 +21,29 @@ const Chapter = ({
   chapterIndex,
 }: ChapterProps) => {
   return (
-    <div className="guide-edit_form-chapter">
-      <h3>{chapter.title}</h3>
-      <div className="flex flex-row">
-        <Button
-          variant="ghost"
-          size="icon"
-          className="text-blue-400 hover:!text-blue-500"
-        >
-          <SquarePen />
-        </Button>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="text-red-400 hover:!text-red-500"
-          onClick={() => actions.deleteChapter(sectionIndex, chapterIndex)}
-        >
-          <Trash2 />
-        </Button>
-      </div>
-    </div>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: chapterIndex * 0.4 }}
+    >
+      <Dialog>
+        <div className="guide-edit_form-chapter">
+          <h3>{chapter.title}</h3>
+          <div className="flex flex-row">
+            <EditButton />
+            <DeleteButton
+              onClick={() => actions.deleteChapter(sectionIndex, chapterIndex)}
+            />
+          </div>
+        </div>
+        <ChapterModal
+          chapter={chapter}
+          chapterIndex={chapterIndex}
+          sectionIndex={sectionIndex}
+          actions={actions}
+        />
+      </Dialog>
+    </motion.div>
   );
 };
 
