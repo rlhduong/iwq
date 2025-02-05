@@ -32,7 +32,7 @@ const SectionModal = ({
         title,
         description,
       };
-      actions.editSection(sectionIndex, newSection);
+      actions.editSection(section.sectionId, newSection);
     }
   };
   return (
@@ -63,7 +63,7 @@ const SectionModal = ({
         </div>
       </div>
       <DialogFooter>
-        <DialogClose>
+        <DialogClose asChild>
           <Button
             type="submit"
             variant="outline"

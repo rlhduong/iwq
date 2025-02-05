@@ -30,16 +30,14 @@ enum ChapterType {
 }
 
 interface ChapterModalProps {
-  sectionIndex: number;
-  chapterIndex: number;
+  sectionId: string;
   chapter: Chapter;
   actions: EditFormSectionActions;
 }
 
 const ChapterModal = ({
   chapter,
-  chapterIndex,
-  sectionIndex,
+  sectionId,
   actions,
 }: ChapterModalProps) => {
   const [chapterType, setChapterType] = useState(chapter.type);
@@ -81,7 +79,7 @@ const ChapterModal = ({
         videoUrl: form.getValues('videoUrl'),
         questions: chapter.questions,
       };
-      actions.editChapter(sectionIndex, chapterIndex, newChapter);
+      actions.editChapter(sectionId, chapter.chapterId, newChapter);
     }
   };
 

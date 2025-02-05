@@ -74,16 +74,23 @@ declare global {
   }
 
   interface EditFormSectionActions {
+    initialise: (sections: Section[]) => void;
     addSection: () => void;
-    editSection: (sectionIndex: number, newSection: Section) => void;
-    deleteSection: (sectionIndex: number) => void;
-    addChapter: (sectionIndex: number) => void;
+    editSection: (sectionId: string, newSection: Section) => void;
+    deleteSection: (sectionId: string) => void;
+    addChapter: (sectionId: string) => void;
     editChapter: (
-      sectionIndex: number,
-      chapterIndex: number,
+      sectionId: string,
+      chapterId: string,
       newChapter: Chapter
     ) => void;
-    deleteChapter: (sectionIndex: number, chapterIndex: number) => void;
+    deleteChapter: (sectionId: string, chapterId: string) => void;
+    swapSections: (sourceId: string, destinationId: string) => void;
+    swapChapters: (
+      sectionId: string,
+      sourceId: string,
+      destinationId: string
+    ) => void;
   }
 }
 

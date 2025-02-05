@@ -363,7 +363,7 @@ input[type='color'] {
 }
 
 .guide-edit__form-section-box {
-  @apply bg-customgreys-primarybg rounded-lg p-5 max-h-[450px]  overflow-auto;
+  @apply bg-customgreys-primarybg rounded-lg p-5 max-h-[450px] overflow-auto pb-10;
 }
 
 .guide-edit__form-create-section-button {
@@ -371,7 +371,7 @@ input[type='color'] {
 }
 
 .guide-edit__form-sections {
-  @apply flex flex-col gap-4 p-4 pb-10 bg-[#27282D] rounded-md box-border transition-all duration-1000 ease-in-out;
+  @apply flex flex-col gap-4 rounded-md box-border transition-all duration-1000 ease-in-out;
 }
 
 .guide-edit__form-whole-section {
