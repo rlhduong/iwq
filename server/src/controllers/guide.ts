@@ -80,7 +80,7 @@ export const createGuide = async (
     });
 
     await newguide.save();
-    res.json({data: newguide });
+    res.json({ data: newguide });
   } catch (error) {
     res.status(500).json({ message: 'Error creating guide', error });
   }
@@ -105,7 +105,7 @@ export const deleteGuide = async (req: Request, res: Response) => {
     }
 
     await guide.delete();
-    res.json({data: 'Guide deleted successfully' });
+    res.json({ data: 'Guide deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: 'Error deleting guide', error });
   }
@@ -135,6 +135,7 @@ export const updateGuide = async (
     guide.title = updateData.title;
     guide.description = updateData.description;
     guide.sections = updateData.sections;
+    guide.status = updateData.status;
     console.log(guide);
     await guide.save();
 

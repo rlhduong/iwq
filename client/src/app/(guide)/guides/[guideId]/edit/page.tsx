@@ -14,6 +14,11 @@ import useEditSection from '@/hooks/useEditSection';
 import Left from '@/components/edit/Left';
 import Right from '@/components/edit/Right';
 
+enum GuideStatus {
+  Draft = 'draft',
+  Published = 'published',
+}
+
 const page = () => {
   const router = useRouter();
   const params = useParams();
@@ -74,6 +79,19 @@ const page = () => {
     updateGuide(updatedGuide);
   };
 
+  const handleToggleStatus = async () => {
+    if (!guide) return;
+    const updatedGuide = {
+      ...guide,
+      status:
+        guide.status === GuideStatus.Draft
+          ? GuideStatus.Published
+          : GuideStatus.Draft,
+    };
+    console.log(updatedGuide);
+    updateGuide(updatedGuide);
+  };
+
   return (
     <div className="guide-edit__layout">
       <main className="guide-edit__main">
@@ -90,7 +108,20 @@ const page = () => {
             title="Guide Setup"
             subtitle="Complete all fields and save your progress"
           />
-          <div className="flex gap-2">
+          <div className="flex flex-row gap-6">
+            {guide && (
+              <Button
+                className={
+                  guide.status === 'draft'
+                    ? 'text-green-500 hover:text-green-600'
+                    : 'text-[#c5bc6c] hover:text-[#cdc04c]'
+                }
+                variant="ghost"
+                onClick={handleToggleStatus}
+              >
+                {guide.status === 'draft' ? 'Publish guide' : 'Revert to draft'}
+              </Button>
+            )}
             <Button
               className="guide-edit__save-button"
               onClick={handleSaveProgress}
