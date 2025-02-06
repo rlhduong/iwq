@@ -60,7 +60,7 @@ input[type='color'] {
 }
 
 .custom-scrollbar {
-  @apply overflow-y-scroll scrollbar-thin scrollbar-thumb-primary-600 scrollbar-track-customgreys-primarybg scrollbar-thumb-rounded-sm scrollbar-track-rounded-xl;
+  @apply overflow-auto scrollbar-thin scrollbar-thumb-primary-600 scrollbar-track-customgreys-primarybg scrollbar-thumb-rounded-sm scrollbar-track-rounded-xl;
 }
 
 @layer base {
@@ -401,4 +401,57 @@ input[type='color'] {
 
 .guide-edit__quiz-question {
   @apply flex flex-row w-full bg-[#202024] p-2  rounded-md;
+}
+
+/* GUIDE VIEW PAGE */
+.guide__layout {
+  @apply flex flex-col min-h-screen w-full;
+}
+
+.guide__sidebar-transition {
+  @apply min-h-full overflow-hidden transition-all duration-500 ease-in-out;
+}
+
+.guide__header {
+  @apply h-[10svh] flex flex-row justify-end items-center py-8 w-full border-b border-customgreys-darkerGrey;
+}
+
+.guide__collapse-button {
+  @apply text-primary-750 cursor-pointer rounded-sm h-7 w-7;
+}
+
+.guide__uncollapse-button {
+  @apply overflow-hidden bg-primary-750 text-white-50 cursor-pointer hover:!bg-primary-700 py-2 px-4;
+}
+
+.guide__sidebar {
+  @apply h-[90svh] w-full flex flex-col border-l border-b border-customgreys-darkerGrey bg-customgreys-sidebar;
+}
+
+.guide__main {
+  @apply flex flex-col h-40 flex-grow;
+}
+
+.guide__chapter-text {
+  @apply p-10 flex flex-col gap-4;
+}
+
+.guide__section-list {
+  @apply flex flex-col w-full;
+}
+
+.guide__section-title {
+  @apply text-xl font-semibold px-4 py-6 whitespace-nowrap;
+}
+
+.guide__chapter-list {
+  @apply flex flex-col;
+}
+
+.guide__chapter {
+  @apply text-md text-white-50 hover:bg-slate-800 p-5 transition-all duration-300 ease-in-out cursor-pointer whitespace-nowrap;
+}
+
+.guide__chapter-active {
+  @apply bg-slate-800;
 }

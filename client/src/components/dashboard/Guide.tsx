@@ -9,6 +9,7 @@ import { useValidatSessionQuery, useDeleteGuideMutation } from '@/state/api';
 import { Trash, Pencil } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
+import DeleteAlert from './DeleteAlert';
 
 const Guide = ({ guide }: GuideCardProps) => {
   const { data: user } = useValidatSessionQuery();
@@ -20,7 +21,10 @@ const Guide = ({ guide }: GuideCardProps) => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <Card className="guide-card group">
+      <Card
+        className="guide-card group"
+        onClick={() => router.push(`/guides/${guide.guideId}`)}
+      >
         <CardHeader className="guide-card__header">
           <Image
             src={guide.image || '/placeholder.svg'}
@@ -47,21 +51,17 @@ const Guide = ({ guide }: GuideCardProps) => {
             {user?.id === guide.authorId && (
               <div className="flex gap-2">
                 <Button
-                  variant="outline"
+                  variant="ghost"
                   size="icon"
-                  onClick={() => router.push(`/guides/${guide.guideId}/edit`)}
-                  className="hover:text-green-500 text-green-300 duration-300"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    router.push(`/guides/${guide.guideId}/edit`);
+                  }}
+                  className="hover:text-green-500 text-green-300 duration-300 z-1000"
                 >
                   <Pencil />
                 </Button>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={() => deleteGuide(guide.guideId)}
-                  className="hover:text-red-600 text-red-400 duration-300"
-                >
-                  <Trash />
-                </Button>
+                <DeleteAlert guideId={guide.guideId} />
               </div>
             )}
           </div>
