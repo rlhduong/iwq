@@ -1,7 +1,9 @@
 'use client';
-import React, { useState } from 'react';
+import React from 'react';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
+import { useRouter } from 'next/navigation';
+import { MoveLeft } from 'lucide-react';
 
 const Header = ({
   open,
@@ -10,8 +12,16 @@ const Header = ({
   open: boolean;
   handleClick: () => void;
 }) => {
+  const router = useRouter();
   return (
     <div className="guide__header">
+      <Button
+        className="text-primary-600 hover:!text-primary-700 ml-10 text-xl"
+        variant={'ghost'}
+        onClick={() => router.push('/guides')}
+      >
+        Back
+      </Button>
       {!open && (
         <motion.div
           initial={{ opacity: 0 }}

@@ -45,6 +45,7 @@ declare global {
     createdAt: string;
     updatedAt: string;
     featured?: boolean;
+    favourites?: string[];
   }
 
   interface FeaturedGuideCardProps {

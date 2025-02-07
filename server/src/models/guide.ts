@@ -129,6 +129,11 @@ const guideSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  favourites: {
+    type: Array,
+    required: false,
+    schema: [String],
+  }
 });
 
 const Guide = model('Guide', guideSchema);

@@ -23,7 +23,7 @@ const Section = ({ guideId, section, index }: SectionProps) => {
           <ol className="guide__chapter-list">
             {section.chapters.map((chapter, cIdx) => (
               <Link
-                href={`/guides/${guideId}?sectionId=${index + 1}&chapter=${
+                href={`/guides/${guideId}?section=${index + 1}&chapter=${
                   cIdx + 1
                 }`}
                 key={chapter.chapterId}
