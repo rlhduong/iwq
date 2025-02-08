@@ -140,7 +140,7 @@ const page = () => {
           </div>
         </div>
         <div className="guide-edit__form">
-          <Left form={form} file={thumbnail} setFile={setThumbnail} />
+          <Left form={form} file={thumbnail} setFile={setThumbnail} img={guide?.image || ''} />
           <Right currSections={currSections} actions={actions} />
         </div>
       </main>

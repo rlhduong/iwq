@@ -130,10 +130,10 @@ const guideSchema = new Schema({
     default: false,
   },
   favourites: {
-    type: Array,
-    required: false,
-    schema: [String],
-  }
+    type: Number,
+    required: true,
+    default: 0,
+  },
 });
 
 const Guide = model('Guide', guideSchema);

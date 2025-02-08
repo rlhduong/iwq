@@ -7,7 +7,6 @@ import Sidebar from '@/components/guide/Sidebar';
 import Loading from '@/components/Loader';
 import Header from '@/components/guide/Header';
 import Content from '@/components/guide/Content';
-import Info from '@/components/guide/Info';
 
 const page = () => {
   const router = useRouter();
@@ -64,7 +63,11 @@ const page = () => {
 
   return (
     <div className="guide__layout">
-      <Header open={open} handleClick={handleCollapse} />
+      <Header
+        open={open}
+        handleClick={handleCollapse}
+        guideId={guide?.guideId || ''}
+      />
       <div className="flex flex-row w-full">
         {isLoading && <Loading />}
         {guide && (

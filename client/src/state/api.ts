@@ -86,6 +86,14 @@ export const api = createApi({
       invalidatesTags: ['User'],
     }),
 
+    likeGuide: build.mutation<void, string>({
+      query: (guideId) => ({
+        url: `guides/${guideId}/favourite`,
+        method: 'POST',
+      }),
+      invalidatesTags: ['Guides', 'User'],
+    }),
+
     /**
 		 ====================
      GUIDES
@@ -93,7 +101,7 @@ export const api = createApi({
      */
 
     getFeaturedGuides: build.query<Guide[], void>({
-      query: () => 'guides?featured=true',
+      query: () => 'guides/featured',
       providesTags: ['Featured Guides'],
     }),
 
@@ -158,4 +166,5 @@ export const {
   useDeleteGuideMutation,
   useCreateGuideMutation,
   useUpdateGuideMutation,
+  useLikeGuideMutation,
 } = api;

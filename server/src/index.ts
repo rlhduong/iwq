@@ -30,8 +30,6 @@ const s3Config = {
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || '',
   },
 };
-
-console.log(s3Config);
 export const s3 = new S3Client(s3Config);
 
 const app = express();

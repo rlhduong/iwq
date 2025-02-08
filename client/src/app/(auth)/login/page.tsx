@@ -84,12 +84,9 @@ const Login = () => {
                 <FormItem className="mb-5">
                   <div className="flex flex-row justify-between w-full">
                     <FormLabel className="auth__label">Password</FormLabel>
-                    <Link
-                      href="/"
-                      className="hover:underline text-md pt-[0.1rem] text-primary-200"
-                    >
+                    <p className="hover:underline text-md pt-[0.1rem] text-primary-200">
                       Forgot your password?
-                    </Link>
+                    </p>
                   </div>
                   <FormControl>
                     <Input {...field} className="auth__input" type="password" />

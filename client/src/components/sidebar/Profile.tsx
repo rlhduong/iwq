@@ -1,6 +1,6 @@
 'use client';
 
-import { Bell, ChevronsUpDown, LogOut, Settings } from 'lucide-react';
+import { ChevronsUpDown, LogOut } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useValidatSessionQuery, useLogoutMutation } from '@/state/api';
 import {

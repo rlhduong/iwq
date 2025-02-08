@@ -36,7 +36,7 @@ const Guide = ({ guide, isMy = false }: GuideCardProps) => {
         <CardContent className="guide-card__content">
           <div className="flex flex-col gap-2">
             <CardTitle className="guide-card__title">{guide.title}</CardTitle>
-            <p className="overflow-hidden max-h-14 text-white-50">
+            <p className="overflow-hidden max-h-14 text-white-50 line-clamp-2">
               {guide.description}
             </p>
           </div>

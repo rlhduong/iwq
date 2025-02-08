@@ -1,6 +1,10 @@
 import bcrypt from 'bcrypt';
 import { s3 } from '../index';
-import { PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
+import {
+  PutObjectCommand,
+  GetObjectCommand,
+  DeleteObjectCommand,
+} from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -36,4 +40,12 @@ export const getImgS3 = async (guideId: string) => {
   const command = new GetObjectCommand(params);
   const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
   return url;
+};
+
+export const deleteImgS3 = async (guideId: string) => {
+  const params = {
+    Bucket: process.env.AWS_BUCKET_NAME || '',
+    Key: `guides/${guideId}`,
+  };
+  await s3.send(new DeleteObjectCommand(params));
 };

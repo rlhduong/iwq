@@ -17,9 +17,10 @@ interface LeftProps {
   form: UseFormReturn<EditGuideFormData>;
   file: File | null;
   setFile: (file: File) => void;
+  img: string;
 }
 
-const Left = ({ form, file, setFile }: LeftProps) => {
+const Left = ({ form, file, setFile, img }: LeftProps) => {
   const [previewUrl, setPreviewUrl] = useState<string>('');
 
   useEffect(() => {
@@ -38,8 +39,8 @@ const Left = ({ form, file, setFile }: LeftProps) => {
       <div className="flex flex-row w-full gap-4 mb-5">
         <div className="guide-edit__form-thumbnail">
           <Image
-            key={previewUrl || '/placeholder.svg'}
-            src={previewUrl || '/placeholder.svg'}
+            key={previewUrl || img || '/placeholder.svg'}
+            src={previewUrl || img || '/placeholder.svg'}
             alt="guide thumbnail"
             width={400}
             height={350}

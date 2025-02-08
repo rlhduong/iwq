@@ -14,7 +14,7 @@ const Info = ({ guide }: InfoProps) => {
             <span className="text-primary-500">{guide.authorName}</span>
           </p>
           <p className="guide__info-updated">
-            {guide.favourites?.length}{' '}endorsements
+            {guide.favourites || '0 '} endorsements
           </p>
         </div>
       </div>
