@@ -7,9 +7,9 @@ import {
   SidebarFooter,
 } from '@/components/ui/sidebar';
 import Group from './Group';
-import NavUser from './Profile';
 import Link from 'next/link';
 import { GraduationCap } from 'lucide-react';
+import Logout from './Logout';
 
 const data = {
   navMain: [
@@ -57,7 +57,7 @@ function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         ))}
       </SidebarContent>
       <SidebarFooter className="bg-customgreys-sidebar">
-        <NavUser />
+        <Logout />
       </SidebarFooter>
     </Sidebar>
   );

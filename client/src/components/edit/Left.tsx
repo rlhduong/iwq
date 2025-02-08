@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Form,
   FormControl,
@@ -13,16 +13,33 @@ import { EditGuideFormData } from '@/lib/schemas';
 import { UseFormReturn } from 'react-hook-form';
 import Image from 'next/image';
 
-const Left = ({ form }: { form: UseFormReturn<EditGuideFormData> }) => {
-  const [img, setImg] = useState<string>('');
+interface LeftProps {
+  form: UseFormReturn<EditGuideFormData>;
+  file: File | null;
+  setFile: (file: File) => void;
+}
+
+const Left = ({ form, file, setFile }: LeftProps) => {
+  const [previewUrl, setPreviewUrl] = useState<string>('');
+
+  useEffect(() => {
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setPreviewUrl(url);
+
+      return () => URL.revokeObjectURL(url);
+    } else {
+      setPreviewUrl('');
+    }
+  }, [file]);
 
   return (
     <div className="guide-edit__form-box">
       <div className="flex flex-row w-full gap-4 mb-5">
         <div className="guide-edit__form-thumbnail">
           <Image
-            key={img || '/placeholder.svg'}
-            src={img || '/placeholder.svg'}
+            key={previewUrl || '/placeholder.svg'}
+            src={previewUrl || '/placeholder.svg'}
             alt="guide thumbnail"
             width={400}
             height={350}
@@ -32,15 +49,20 @@ const Left = ({ form }: { form: UseFormReturn<EditGuideFormData> }) => {
         </div>
         <div className="flex flex-col gap-4 w-2/5">
           <Label>Thumbnail</Label>
-          <input
-            type="file"
-            id="file"
-            accept="image/*"
-            onChange={(e) => {
-              const file = e.target.files?.[0];
-              setImg(file ? URL.createObjectURL(file) : '');
-            }}
-          />
+          <form>
+            <input
+              name="thumbnail"
+              type="file"
+              id="file"
+              accept="image/*"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) {
+                  setFile(file);
+                }
+              }}
+            />
+          </form>
         </div>
       </div>
 

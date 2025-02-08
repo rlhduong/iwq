@@ -3,6 +3,7 @@ import Guide from '../models/guide';
 import { v4 as uuidv4 } from 'uuid';
 import { format } from 'date-fns';
 import { SessionUser } from '../types';
+import { uploadImgS3, getImgS3 } from '../libs/utils';
 
 export const getGuides = async (req: Request, res: Response) => {
   const { featured } = req.query;
@@ -11,7 +12,16 @@ export const getGuides = async (req: Request, res: Response) => {
       featured && featured === 'true'
         ? await Guide.scan('featured').eq(true).exec()
         : await Guide.scan('status').eq('published').exec();
-    res.json({ message: 'guides retrieved successfully', data: guides });
+
+    const updatedGuides = await Promise.all(
+      guides.map(async (guide) => {
+        if (guide.image) {
+          guide.image = await getImgS3(guide.image);
+        }
+        return guide;
+      })
+    );
+    res.json({ message: 'guides retrieved successfully', data: updatedGuides });
   } catch (error) {
     res.status(500).json({ message: 'Error retrieving guides', error });
   }
@@ -26,6 +36,7 @@ export const getGuide = async (req: Request, res: Response) => {
       return;
     }
 
+    if (guide.image) guide.image = await getImgS3(guide.image);
     res.json({ message: 'Guides retrieved successfully', data: guide });
   } catch (error) {
     res.status(500).json({ message: 'Error retrieving guide', error });
@@ -36,7 +47,15 @@ export const getMyGuides = async (req: Request, res: Response) => {
   const user = req.user as SessionUser;
   try {
     const guides = await Guide.scan('authorId').eq(user.id).exec();
-    res.json({ message: 'Guides retrieved successfully', data: guides });
+    const updatedGuides = await Promise.all(
+      guides.map(async (guide) => {
+        if (guide.image) {
+          guide.image = await getImgS3(guide.image);
+        }
+        return guide;
+      })
+    );
+    res.json({ message: 'guides retrieved successfully', data: updatedGuides });
   } catch (error) {
     res.status(500).json({ message: 'Error retrieving guides', error });
   }
@@ -47,7 +66,15 @@ export const getFavouriteGuides = async (req: Request, res: Response) => {
   try {
     const favouriteIds = user.favourites || [];
     const guides = await Guide.batchGet(favouriteIds);
-    res.json({ message: 'Guides retrieved successfully', data: guides });
+    const updatedGuides = await Promise.all(
+      guides.map(async (guide) => {
+        if (guide.image) {
+          guide.image = await getImgS3(guide.image);
+        }
+        return guide;
+      })
+    );
+    res.json({ message: 'guides retrieved successfully', data: updatedGuides });
   } catch (error) {
     res.status(500).json({ message: 'Error retrieving guides', error });
   }
@@ -116,7 +143,7 @@ export const updateGuide = async (
   res: Response
 ): Promise<void> => {
   const { guideId } = req.params;
-  const updateData = { ...req.body };
+  const updateData = { ...JSON.parse(req.body.guide) };
   const user = req.user as SessionUser;
 
   try {
@@ -131,12 +158,16 @@ export const updateGuide = async (
       return;
     }
 
+    if (req.file) {
+      await uploadImgS3(req.file, guideId);
+      guide.image = guideId;
+    }
+
     guide.updatedAt = format(new Date(), 'dd/MM/yyyy');
     guide.title = updateData.title;
     guide.description = updateData.description;
     guide.sections = updateData.sections;
     guide.status = updateData.status;
-    console.log(guide);
     await guide.save();
 
     res.json({ message: 'Guide updated successfully', data: guide });

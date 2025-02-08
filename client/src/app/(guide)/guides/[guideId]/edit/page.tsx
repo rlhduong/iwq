@@ -1,8 +1,7 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '@/components/dashboard/Header';
-
 import { useGetGuideQuery, useUpdateGuideMutation } from '@/state/api';
 import { useRouter, useParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
@@ -51,6 +50,8 @@ const page = () => {
     sections: guide?.sections || [],
   });
 
+  const [thumbnail, setThumbnail] = useState<File | null>(null);
+
   const form = useForm<EditGuideFormData>({
     resolver: zodResolver(editGuideSchema),
     defaultValues: {
@@ -76,7 +77,13 @@ const page = () => {
       ...form.getValues(),
       sections: currSections,
     };
-    updateGuide(updatedGuide);
+    const formData = new FormData();
+    formData.append('guide', JSON.stringify(updatedGuide));
+    if (thumbnail) {
+      formData.append('thumbnail', thumbnail as Blob);
+    }
+    formData.append('guideId', guide.guideId);
+    await updateGuide(formData);
   };
 
   const handleToggleStatus = async () => {
@@ -88,8 +95,10 @@ const page = () => {
           ? GuideStatus.Published
           : GuideStatus.Draft,
     };
-    console.log(updatedGuide);
-    updateGuide(updatedGuide);
+    const formData = new FormData();
+    formData.append('guide', JSON.stringify(updatedGuide));
+    formData.append('guideId', guide.guideId);
+    updateGuide(formData);
   };
 
   return (
@@ -131,7 +140,7 @@ const page = () => {
           </div>
         </div>
         <div className="guide-edit__form">
-          <Left form={form} />
+          <Left form={form} file={thumbnail} setFile={setThumbnail} />
           <Right currSections={currSections} actions={actions} />
         </div>
       </main>

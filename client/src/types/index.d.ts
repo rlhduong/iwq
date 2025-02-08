@@ -72,6 +72,7 @@ declare global {
 
   interface GuideCardProps {
     guide: Guide;
+    isMy: boolean;
   }
 
   interface EditFormSectionActions {

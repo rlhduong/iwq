@@ -134,9 +134,9 @@ export const api = createApi({
       invalidatesTags: ['Guides'],
     }),
 
-    updateGuide: build.mutation<void, Partial<Guide>>({
+    updateGuide: build.mutation<void, FormData>({
       query: (body) => ({
-        url: `guides/${body.guideId}`,
+        url: `guides/${body.get('guideId')}`,
         method: 'PUT',
         body,
       }),

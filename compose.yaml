@@ -4,15 +4,11 @@ services:
     container_name: server
     build: ./server
     ports:
-      - "8080:8080"
+      - '8080:8080'
     depends_on:
       - dynamodb-local
-    environment:
-      - PORT=8080
-      - NODE_ENV=development
-      - AWS_ACCESS_KEY_ID=local
-      - AWS_SECRET_ACCESS_KEY=local
-      - REGION=ap-southeast-1
+    env_file:
+      - ./server/.env
     networks:
       - app-network
     develop:
@@ -29,9 +25,11 @@ services:
     build: ./client
     container_name: client
     ports:
-      - "3000:3000"
+      - '3000:3000'
     depends_on:
       - api
+    env_file:
+      - ./client/.env.local
     networks:
       - app-network
     develop:
@@ -46,17 +44,15 @@ services:
 
   dynamodb-local:
     container_name: db
-    image: "amazon/dynamodb-local"
+    image: 'amazon/dynamodb-local'
     ports:
-      - "8000:8000"
-    command: "-jar DynamoDBLocal.jar -sharedDb"
+      - '8000:8000'
+    command: '-jar DynamoDBLocal.jar -sharedDb'
     networks:
       - app-network
+    volumes:
+    - ./data:/home/dynamodblocal/data
 
 networks:
   app-network:
     driver: bridge
-
-        
-
-

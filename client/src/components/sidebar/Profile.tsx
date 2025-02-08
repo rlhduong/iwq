@@ -28,10 +28,10 @@ function NavUser() {
   if (isLoading) return <></>;
   if (!user) return <></>;
 
-  const handleLogout = async ()  => {
+  const handleLogout = async () => {
     await logout();
     router.push('/');
-  }
+  };
 
   return (
     <SidebarMenu>
@@ -79,18 +79,10 @@ function NavUser() {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem className="hover:!bg-customgreys-primarybg">
-                <Settings />
-                Account
-              </DropdownMenuItem>
-              <DropdownMenuItem className="hover:!bg-customgreys-primarybg">
-                <Bell />
-                Notifications
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className="hover:!bg-customgreys-primarybg" onClick={handleLogout}>
+            <DropdownMenuItem
+              className="hover:!bg-customgreys-primarybg"
+              onClick={handleLogout}
+            >
               <LogOut />
               Log out
             </DropdownMenuItem>
