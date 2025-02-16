@@ -22,7 +22,7 @@ const page = () => {
           ) : (
             <>
               {guides?.map((guide) => (
-                <Guide key={guide.guideId} guide={guide} isMy={false}/>
+                <Guide key={guide.guideId} guide={guide} isMy={false} />
               ))}
             </>
           )}

@@ -1,6 +1,5 @@
 import { Response, Request, NextFunction } from 'express';
 import { validateSessionToken, clearSessionTokenCookie } from '../libs/auth';
-import { error } from 'console';
 
 export const csrfProtection = (
   req: Request,
@@ -48,7 +47,7 @@ export const sessionValidation = async (
   }
 
   req.user = {
-    id: user.userId,
+    id: user._id.toString(),
     firstName: user.firstName,
     lastName: user.lastName,
     favourites: user.favourites,

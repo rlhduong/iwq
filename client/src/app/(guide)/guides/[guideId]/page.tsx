@@ -7,6 +7,7 @@ import Sidebar from '@/components/guide/Sidebar';
 import Loading from '@/components/Loader';
 import Header from '@/components/guide/Header';
 import Content from '@/components/guide/Content';
+import Info from '@/components/guide/Info';
 
 const page = () => {
   const router = useRouter();
@@ -73,11 +74,12 @@ const page = () => {
         {guide && (
           <>
             <main className="guide__main w-2/3">
-              {currContent && <Content chapter={currContent} />}
-              {/* <hr className="text-customgreys-darkerGrey" /> */}
-              {/* {guide && <Info guide={guide} />} */}
+              {guide && currContent ? (
+                <Content chapter={currContent} />
+              ) : (
+                <Info guide={guide} />
+              )}
             </main>
-
             <div
               className={`${open ? 'w-1/3' : 'w-0'} guide__sidebar-transition`}
             >

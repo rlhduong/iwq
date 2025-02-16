@@ -3,10 +3,10 @@ const {
   encodeHexLowerCase,
 } = require('@oslojs/encoding');
 const { sha256 } = require('@oslojs/crypto/sha2');
-
 import { Request, Response } from 'express';
 import Session from '../models/session';
 import User from '../models/user';
+import mongoose from 'mongoose';
 
 export function generateSessionToken(): string {
   const bytes = new Uint8Array(20);
@@ -16,22 +16,28 @@ export function generateSessionToken(): string {
 }
 
 export async function createSession(token: string, userId: string) {
+  const dbSession = await mongoose.startSession();
+  dbSession.startTransaction();
   const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
-  const expiresAt = new Date(Date.now() + 1000 * 60 * 60 * 24 * 30);
+  const expiresAt = Math.floor((Date.now() + 1000 * 60 * 60 * 24 * 30) / 1000);
 
-  const session = new Session({
-    sessionId,
-    userId,
-    expiresAt: Math.floor(expiresAt.getTime() / 1000),
-  });
-  session.save();
-
-  return session;
+  try {
+    const [session] = await Session.create([{ sessionId, expiresAt, userId }], {
+      session: dbSession,
+    });
+    await dbSession.commitTransaction();
+    return session;
+  } catch (error) {
+    dbSession.abortTransaction();
+    console.error(error);
+  } finally {
+    dbSession.endSession();
+  }
 }
 
 export async function validateSessionToken(token: string) {
   const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
-  const session = await Session.get(sessionId);
+  const session = await Session.findOne({ sessionId });
 
   if (!session) {
     return {
@@ -47,13 +53,32 @@ export async function validateSessionToken(token: string) {
     };
   }
 
-  if (Date.now() >= session.expiresAt * 1000 - 1000 * 60 * 60 * 24 * 15) {
-    session.expiresAt = new Date(Date.now() + 1000 * 60 * 60 * 24 * 30);
-    session.expiresAt = Math.floor(session.expiresAt.getTime() / 1000);
-    await session.save();
+  const dbSession = await mongoose.startSession();
+  dbSession.startTransaction();
+
+  try {
+    if (Date.now() >= session.expiresAt * 1000 - 1000 * 60 * 60 * 24 * 15) {
+      const expiresAt = Math.floor(
+        (Date.now() + 1000 * 60 * 60 * 24 * 30) / 1000
+      );
+
+      await Session.updateOne(
+        { sessionId },
+        { expiresAt },
+        { session: dbSession }
+      );
+
+      await dbSession.commitTransaction();
+      session.expiresAt = expiresAt;
+    }
+  } catch (error) {
+    await dbSession.abortTransaction();
+    console.error(error);
+  } finally {
+    dbSession.endSession();
   }
 
-  const user = await User.get(session.userId);
+  const user = await User.findById(session.userId);
   return {
     session,
     user,
@@ -61,7 +86,18 @@ export async function validateSessionToken(token: string) {
 }
 
 export async function invalidateSession(sessionId: string) {
-  await Session.delete(sessionId);
+  const dbSession = await mongoose.startSession();
+  dbSession.startTransaction();
+
+  try {
+    await Session.deleteOne({ sessionId }, { session: dbSession });
+    await dbSession.commitTransaction();
+  } catch (error) {
+    await dbSession.abortTransaction();
+    console.error('Error deleting session:', error);
+  } finally {
+    dbSession.endSession();
+  }
 }
 
 export function setSessionTokenCookie(
@@ -96,6 +132,6 @@ export async function handleLogin(
 ) {
   const token = generateSessionToken();
   const session = await createSession(token, userId);
-  setSessionTokenCookie(res, token, session.expiresAt);
+  setSessionTokenCookie(res, token, session?.expiresAt || 0);
   res.status(200).json({ data: { message } });
 }

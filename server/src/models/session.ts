@@ -1,10 +1,9 @@
-import { Schema, model } from 'dynamoose';
+import { Schema, model } from 'mongoose';
 
 const sessionSchema = new Schema({
   sessionId: {
     type: String,
     required: true,
-    hashKey: true,
   },
   userId: {
     type: String,
