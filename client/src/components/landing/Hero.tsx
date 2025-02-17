@@ -23,15 +23,16 @@ const Hero = () => {
       <div className="landing__hero-content">
         <h1 className="landing__hero-title">Guides</h1>
         <p className="landing__hero-description">
-          ipsum dolor sit amet, consectetur adipiscing elit. Donec sollicitudin,
-          lectus quis pharetra aliquet, sem velit ultrices tortor, ac fermentum
-          massa justo sit amet risus.
+          Discover a collection of the most esteemed guides, carefully curated
+          to help you master every aspect of the game. Learn advanced
+          strategies, sharpen your skills, and challenge your way up through the
+          ranks
         </p>
         <Button
           className="bg-primary-750 hover:bg-primary-click"
           onClick={() => router.push('/guides')}
         >
-          Get Started
+          Get tarted
         </Button>
       </div>
       <div className="landing__hero-images">

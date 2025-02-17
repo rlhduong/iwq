@@ -105,8 +105,11 @@ export const api = createApi({
       providesTags: ['Featured Guides'],
     }),
 
-    getGuides: build.query<Guide[], void>({
-      query: () => 'guides',
+    getGuides: build.query<Guide[], { search?: string }>({
+      query: ({ search }) => ({
+        url: 'guides',
+        params: { search },
+      }),
       providesTags: ['Guides'],
     }),
 

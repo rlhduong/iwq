@@ -9,7 +9,16 @@ import { uploadImgS3, getImgS3, deleteImgS3 } from '../libs/utils';
 
 export const getGuides = async (req: Request, res: Response) => {
   try {
-    const guides = await Guide.find({ status: 'published' });
+    const { search } = req.query;
+    const guides = search
+      ? await Guide.find({
+          $or: [
+            { title: { $regex: search, $options: 'i' } },
+            { authorName: { $regex: search, $options: 'i' } },
+          ],
+          status: 'published',
+        })
+      : await Guide.find({ status: 'published' });
     const updatedGuides = await Promise.all(
       guides.map(async (guide) => {
         if (guide.image) {

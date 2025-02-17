@@ -1,8 +1,9 @@
 'use client';
 
 import React from 'react';
-import { motion } from 'framer-motion';
 import Image from 'next/image';
+import { motion } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 
 const Card = ({
   guideId,
@@ -11,6 +12,7 @@ const Card = ({
   image,
   authorName,
 }: FeaturedGuideCardProps) => {
+  const router = useRouter();
   return (
     <motion.div
       key={guideId}
@@ -19,6 +21,7 @@ const Card = ({
       transition={{ duration: 0.4, delay: 0.2 }}
       viewport={{ amount: 0.6 }}
       className="landing__featured-guide"
+      onClick={() => router.push(`/guides/${guideId}`)}
     >
       <div className="landing__featured-guide-image-container">
         <Image
