@@ -21,7 +21,6 @@ import { Textarea } from '../ui/textarea';
 import { EditChapterFormData, editChapterSchema } from '@/lib/schemas';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import Quiz from './Quiz';
 
 enum ChapterType {
   Quiz = 'quiz',
@@ -41,7 +40,6 @@ const ChapterModal = ({
   actions,
 }: ChapterModalProps) => {
   const [chapterType, setChapterType] = useState(chapter.type);
-  const [questions, setQuestions] = useState(chapter.questions);
 
   const form = useForm<EditChapterFormData>({
     resolver: zodResolver(editChapterSchema),
@@ -63,10 +61,6 @@ const ChapterModal = ({
       });
     }
   }, [chapter]);
-
-  const handleUpdateQuestions = (newQuestions: Question[]) => {
-    setQuestions(newQuestions);
-  };
 
   const handleSubmit = () => {
     if (chapter) {

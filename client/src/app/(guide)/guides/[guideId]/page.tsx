@@ -9,7 +9,7 @@ import Header from '@/components/guide/Header';
 import Content from '@/components/guide/Content';
 import Info from '@/components/guide/Info';
 
-const page = () => {
+const Page = () => {
   const router = useRouter();
   const params = useParams();
   const searchParams = useSearchParams();
@@ -27,16 +27,6 @@ const page = () => {
   const handleCollapse = () => {
     setOpen((prev) => !prev);
   };
-
-  if (isError) {
-    if (error.status === 404) {
-      return (
-        <div className="w-full h-full flex justify-center items-center">
-          Guide not found
-        </div>
-      );
-    }
-  }
 
   useEffect(() => {
     if (guide) {
@@ -61,6 +51,16 @@ const page = () => {
       setCurrContent(guide.sections[s].chapters[c]);
     }
   }, [guide, section, chapter]);
+
+  if (isError) {
+    if (error.status === 404) {
+      return (
+        <div className="w-full h-full flex justify-center items-center">
+          Guide not found
+        </div>
+      );
+    }
+  }
 
   return (
     <div className="guide__layout">
@@ -92,4 +92,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

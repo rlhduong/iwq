@@ -7,7 +7,7 @@ import Card from './Card';
 import Loading from '../Loader';
 
 const FeaturedGuides = () => {
-  const { data: guides, error, isLoading } = useGetFeaturedGuidesQuery();
+  const { data: guides, isLoading } = useGetFeaturedGuidesQuery();
   return (
     <motion.div
       className="landing__featured"

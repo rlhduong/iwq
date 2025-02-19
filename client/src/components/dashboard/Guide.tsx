@@ -4,7 +4,7 @@ import React from 'react';
 import { Card, CardHeader, CardContent, CardTitle } from '@/components/ui/card';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { useValidatSessionQuery, useDeleteGuideMutation } from '@/state/api';
+import { useValidatSessionQuery } from '@/state/api';
 import { Pencil } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';

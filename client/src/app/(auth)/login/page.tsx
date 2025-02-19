@@ -105,7 +105,7 @@ const Login = () => {
           </form>
         </Form>
         <div className="mt-4 flex flex-row justify-center gap-1">
-          <p>Don't have an account?</p>
+          <p>Don&#39;t have an account?</p>
           <Link href="/register" className="underline">
             Sign up
           </Link>

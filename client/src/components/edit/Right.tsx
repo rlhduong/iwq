@@ -15,7 +15,7 @@ const Right = ({
   currSections: Section[];
   actions: EditFormSectionActions;
 }) => {
-  const [_, startTransition] = useTransition();
+  const [_unused, startTransition] = useTransition();
   const [state, setState] = useOptimistic(
     currSections,
     (sections, { sourceId, destinationId }) => {

@@ -11,7 +11,7 @@ import Loading from '@/components/Loader';
 import Guide from '@/components/dashboard/Guide';
 import { Button } from '@/components/ui/button';
 
-const page = () => {
+const Page = () => {
   const { data: guides, isLoading, isError } = useGetMyGuidesQuery();
   const { data: user } = useValidatSessionQuery();
   const [createGuide] = useCreateGuideMutation();
@@ -56,4 +56,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

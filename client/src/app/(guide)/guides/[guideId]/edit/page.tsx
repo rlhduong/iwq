@@ -18,7 +18,7 @@ enum GuideStatus {
   Published = 'published',
 }
 
-const page = () => {
+const Page = () => {
   const router = useRouter();
   const params = useParams();
   const [updateGuide] = useUpdateGuideMutation();
@@ -27,25 +27,6 @@ const page = () => {
     error,
     isError,
   } = useGetGuideQuery(params.guideId as string);
-
-  if (isError) {
-    if (error.status === 404) {
-      return (
-        <div className="w-full h-full flex justify-center items-center">
-          Guide not found
-        </div>
-      );
-    }
-
-    if (error.status === 403) {
-      return (
-        <div className="w-full h-full flex justify-center items-center">
-          You are not authorised to edit this guide
-        </div>
-      );
-    }
-  }
-
   const { currSections, actions } = useEditSection({
     sections: guide?.sections || [],
   });
@@ -69,6 +50,24 @@ const page = () => {
       actions.initialise(guide.sections);
     }
   }, [guide]);
+
+  if (isError) {
+    if (error.status === 404) {
+      return (
+        <div className="w-full h-full flex justify-center items-center">
+          Guide not found
+        </div>
+      );
+    }
+
+    if (error.status === 403) {
+      return (
+        <div className="w-full h-full flex justify-center items-center">
+          You are not authorised to edit this guide
+        </div>
+      );
+    }
+  }
 
   const handleSaveProgress = async () => {
     if (!guide) return;
@@ -140,7 +139,12 @@ const page = () => {
           </div>
         </div>
         <div className="guide-edit__form">
-          <Left form={form} file={thumbnail} setFile={setThumbnail} img={guide?.image || ''} />
+          <Left
+            form={form}
+            file={thumbnail}
+            setFile={setThumbnail}
+            img={guide?.image || ''}
+          />
           <Right currSections={currSections} actions={actions} />
         </div>
       </main>
@@ -148,4 +152,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

@@ -19,7 +19,6 @@ interface SectionModalProps {
 
 const SectionModal = ({
   section,
-  sectionIndex,
   actions,
 }: SectionModalProps) => {
   const [title, setTitle] = useState(section.title);

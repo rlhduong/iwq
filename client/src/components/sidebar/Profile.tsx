@@ -6,7 +6,6 @@ import { useValidatSessionQuery, useLogoutMutation } from '@/state/api';
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,

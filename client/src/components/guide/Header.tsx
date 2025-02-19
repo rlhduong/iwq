@@ -13,7 +13,7 @@ interface HeaderProps {
 }
 
 const Header = ({ open, handleClick, guideId }: HeaderProps) => {
-  const { data: user, error } = useValidatSessionQuery();
+  const { data: user } = useValidatSessionQuery();
   const [likeGuide] = useLikeGuideMutation();
   const router = useRouter();
   return (

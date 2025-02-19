@@ -6,7 +6,7 @@ import { useGetFavouriteGuidesQuery } from '@/state/api';
 import Loading from '@/components/Loader';
 import Guide from '@/components/dashboard/Guide';
 
-const page = () => {
+const Page = () => {
   const { data: guides, isLoading, isError } = useGetFavouriteGuidesQuery();
   return (
     <div className="dashboard__main">
@@ -32,4 +32,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
