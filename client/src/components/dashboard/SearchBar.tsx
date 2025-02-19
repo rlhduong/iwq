@@ -5,7 +5,11 @@ import { Search } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Input } from '@/components/ui/input';
 
-const SearchBar = () => {
+const SearchBar = ({
+  handleSearch,
+}: {
+  handleSearch: (search: string) => void;
+}) => {
   const [input, setInput] = useState('');
   const router = useRouter();
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -15,6 +19,7 @@ const SearchBar = () => {
       } else {
         router.push('/guides');
       }
+      handleSearch(input);
     }
   };
 

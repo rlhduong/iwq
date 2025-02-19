@@ -1,23 +1,22 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Header from '@/components/dashboard/Header';
 import Loading from '@/components/Loader';
 import Guide from '@/components/dashboard/Guide';
 import SearchBar from '@/components/dashboard/SearchBar';
 
-import { useSearchParams } from 'next/navigation';
 import { useGetGuidesQuery } from '@/state/api';
 const page = () => {
-  const searchParams = useSearchParams();
-  const query = searchParams.get('search');
+  const [search, setSearch] = useState('');
   const { data: guides, isLoading } = useGetGuidesQuery(
-    query ? { search: query } : {}
+    search ? { search } : {}
   );
+
   return (
     <div className="dashboard__main">
       <Header title="Guides" subtitle="" />
-      <SearchBar />
+      <SearchBar handleSearch={setSearch} />
       <div className="dashboard__guides">
         {isLoading ? (
           <Loading />
