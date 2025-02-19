@@ -32,7 +32,7 @@ const Hero = () => {
           className="bg-primary-750 hover:bg-primary-click"
           onClick={() => router.push('/guides')}
         >
-          Get tarted
+          Get Started
         </Button>
       </div>
       <div className="landing__hero-images">
