@@ -1,24 +1,21 @@
-const {
-  encodeBase32LowerCaseNoPadding,
-  encodeHexLowerCase,
-} = require('@oslojs/encoding');
-const { sha256 } = require('@oslojs/crypto/sha2');
+import { randomBytes, createHash } from 'crypto';
 import { Request, Response } from 'express';
 import Session from '../models/session';
 import User from '../models/user';
 import mongoose from 'mongoose';
 
 export function generateSessionToken(): string {
-  const bytes = new Uint8Array(20);
-  crypto.getRandomValues(bytes);
-  const token = encodeBase32LowerCaseNoPadding(bytes);
-  return token;
+  return randomBytes(32).toString('hex'); // 64-character hex token
+}
+
+export function hashToken(token: string): string {
+  return createHash('sha256').update(token).digest('hex');
 }
 
 export async function createSession(token: string, userId: string) {
   const dbSession = await mongoose.startSession();
   dbSession.startTransaction();
-  const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
+  const sessionId = hashToken(token);
   const expiresAt = Math.floor((Date.now() + 1000 * 60 * 60 * 24 * 30) / 1000);
 
   try {
@@ -36,7 +33,7 @@ export async function createSession(token: string, userId: string) {
 }
 
 export async function validateSessionToken(token: string) {
-  const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
+  const sessionId = hashToken(token);
   const session = await Session.findOne({ sessionId });
 
   if (!session) {
@@ -120,7 +117,7 @@ export function setSessionTokenCookie(
 export function clearSessionTokenCookie(req: Request, res: Response): void {
   const cookies = req.cookies;
   const token = cookies?.session;
-  const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
+  const sessionId = hashToken(token);
   invalidateSession(sessionId);
   res.clearCookie('session', { path: '/' });
 }

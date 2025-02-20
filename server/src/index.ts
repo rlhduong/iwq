@@ -8,6 +8,7 @@ import morgan from 'morgan';
 import multer from 'multer';
 import { S3Client } from '@aws-sdk/client-s3';
 import mongoose from 'mongoose';
+import serverless from 'serverless-http';
 
 /* ROUTES IMPORT */
 import userRoutes from './routes/user';
@@ -20,10 +21,10 @@ const upload = multer({ storage });
 
 mongoose.connect(process.env.MONGODB_ATLAS_URI || '');
 export const s3 = new S3Client({
-  region: process.env.AWS_REGION || 'ap-southeast-2',
+  region: process.env.GUIDE_AWS_REGION || 'ap-southeast-2',
   credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID || '',
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || '',
+    accessKeyId: process.env.GUIDE_AWS_ACCESS_KEY_ID || '',
+    secretAccessKey: process.env.GUIDE_AWS_SECRET_ACCESS_KEY || '',
   },
 });
 
@@ -35,7 +36,7 @@ app.use(morgan('common'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(
   cors({
-    origin: 'http://localhost:3000',
+    origin: ['http://localhost:3000', process.env.FRONTEND_URL || ''],
     credentials: true,
   })
 );
@@ -46,7 +47,13 @@ app.use('/user', userRoutes);
 app.use('/guides', upload.single('thumbnail'), guideRoutes);
 
 /* SERVER LISTEN */
+app.get('/happy', (req, res) => {
+  res.status(200).send('Happy coding!');
+});
+
 const port = process.env.PORT || 8080;
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
+
+export const handler = serverless(app);

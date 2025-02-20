@@ -1,0 +1,29 @@
+service: w-guides-lambda
+frameworkVersion: '3'
+useDotenv: true
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: ap-southeast-2
+  deploymentBucket:
+    name: rlhduong-guides-s3-sydney
+  environment:
+    PORT: ${env:PORT}
+    NODE_ENV: ${env:NODE_ENV}
+    AWS_BUCKET_NAME: ${env:AWS_BUCKET_NAME}
+    MONGODB_ATLAS_USERNAME: ${env:MONGODB_ATLAS_USERNAME}
+    MONGODB_ATLAS_PASSWORD: ${env:MONGODB_ATLAS_PASSWORD}
+    MONGODB_ATLAS_URI: ${env:MONGODB_ATLAS_URI}
+    FRONTEND_URL: ${env:FRONTEND_URL}
+    GUIDE_AWS_REGION: ${env:GUIDE_AWS_REGION}
+    GUIDE_AWS_ACCESS_KEY_ID: ${env:GUIDE_AWS_ACCESS_KEY_ID}
+    GUIDE_AWS_SECRET_ACCESS_KEY: ${env:GUIDE_AWS_SECRET_ACCESS_KEY}
+  httpApi:
+    cors: true
+
+functions:
+  app:
+    handler: dist/index.handler
+    events:
+      - httpApi: '*'
