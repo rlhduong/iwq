@@ -19,7 +19,6 @@ dotenv.config();
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
-mongoose.connect(process.env.MONGODB_ATLAS_URI || '');
 export const s3 = new S3Client({
   region: process.env.GUIDE_AWS_REGION || 'ap-southeast-2',
   credentials: {
@@ -55,5 +54,21 @@ const port = process.env.PORT || 8080;
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
+
+let isConnected = false; // Track connection state
+
+const connectToDatabase = async () => {
+  if (!isConnected) {
+    try {
+      await mongoose.connect(process.env.MONGODB_ATLAS_URI || '');
+      isConnected = true;
+    } catch (error) {
+      throw error;
+    }
+  }
+};
+
+// Connect to DB before handling requests
+connectToDatabase();
 
 export const handler = serverless(app);
